@@ -1,16 +1,16 @@
 {
   "domain": "comap",
   "name": "ComAp",
-  "version": "0.1.0",
+  "codeowners": [
+    "@dobters"
+  ],
   "config_flow": true,
-  "iot_class": "local_polling",
   "dependencies": ["network"],
+  "documentation": "https://github.com/dobters/hass-comap",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/dobters/hass-comap/issues",
   "requirements": [
     "pycomap==2.3.1"
   ],
-  "documentation": "https://github.com/dobters/hass-comap",
-  "issue_tracker": "https://github.com/dobters/hass-comap/issues",
-  "codeowners": [
-    "@dobters"
-  ]
+  "version": "0.1.0"
 }
