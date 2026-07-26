@@ -101,9 +101,7 @@ class ComApCoordinator(DataUpdateCoordinator[ComApData]):
         return ComApData(values=values, setpoints=setpoints, alarms=alarms)
 
     def _process_alarm_events(self, alarms: list[AlarmRecord]) -> None:
-        current_active = {
-            _alarm_key(a): a for a in alarms if a.is_active
-        }
+        current_active = {_alarm_key(a): a for a in alarms if a.is_active}
 
         if self._active_alarms is None:
             # First successful poll — snapshot state without firing events so that

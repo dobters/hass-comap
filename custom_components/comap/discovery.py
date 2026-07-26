@@ -19,9 +19,8 @@ async def discover(hass: HomeAssistant) -> list[DiscoveryDevice]:
         if not adapter["enabled"]:
             continue
         for ip_info in adapter["ipv4"]:
-            interface = ip_interface(
-                f"{ip_info['address']}/{ip_info['network_prefix']}"
-            )
-            interfaces.append(interface)
+            interface = ip_interface(f"{ip_info['address']}/{ip_info['network_prefix']}")
+            if isinstance(interface, IPv4Interface):
+                interfaces.append(interface)
 
     return await _discover_devices(*interfaces)

@@ -64,12 +64,17 @@ def main() -> int:
     if manifest.get("version") != version or manifest.get("requirements") != requirements:
         manifest["version"] = version
         manifest["requirements"] = requirements
-        MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
+        # Hassfest requires: domain, name, then alphabetical order.
+        fixed = {"domain": manifest.pop("domain"), "name": manifest.pop("name")}
+        fixed.update(dict(sorted(manifest.items())))
+        MANIFEST.write_text(json.dumps(fixed, indent=2) + "\n")
         print(f"updated manifest.json: version={version} requirements={requirements}")
         changed = True
 
     # --- hacs.json: homeassistant min version ---
-    ha_dep = next((d for d in dev_deps if isinstance(d, str) and _package_name(d) == "homeassistant"), None)
+    ha_dep = next(
+        (d for d in dev_deps if isinstance(d, str) and _package_name(d) == "homeassistant"), None
+    )
     if ha_dep is None:
         print("error: homeassistant not found in dev dependencies", file=sys.stderr)
         return 1

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from ipaddress import IPv4Address
-from typing import Any, override
+from typing import Any, cast, override
 
 import voluptuous as vol
 from homeassistant.config_entries import (
@@ -29,6 +29,7 @@ from homeassistant.helpers.selector import (
     TextSelectorConfig,
     TextSelectorType,
 )
+from homeassistant.helpers.typing import DiscoveryInfoType
 from pycomap import (
     ComApAuthError,
     ComApConnectionError,
@@ -89,15 +90,15 @@ def _credentials_schema(
     port: int = DEFAULT_PORT,
     controller_address: int = DEFAULT_CONTROLLER_ADDRESS,
 ) -> vol.Schema:
-    host_key = (
-        vol.Required(CONF_HOST) if host is None else vol.Required(CONF_HOST, default=host)
-    )
+    host_key = vol.Required(CONF_HOST) if host is None else vol.Required(CONF_HOST, default=host)
     return vol.Schema(
         {
             host_key: _HOST_VALIDATOR,
             vol.Required(CONF_PORT, default=port): _PORT_SELECTOR,
             vol.Required(CONF_CONTROLLER_ADDRESS, default=controller_address): vol.All(
-                NumberSelector(NumberSelectorConfig(min=1, max=32, step=1, mode=NumberSelectorMode.BOX)),
+                NumberSelector(
+                    NumberSelectorConfig(min=1, max=32, step=1, mode=NumberSelectorMode.BOX)
+                ),
                 vol.Coerce(int),
             ),
             vol.Required(CONF_ACCESS_CODE, default="0"): _HIDDEN_SELECTOR,
@@ -202,24 +203,23 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
 
     @override
     async def async_step_integration_discovery(
-        self, discovery_info: DiscoveryDevice
+        self, discovery_info: DiscoveryInfoType
     ) -> ConfigFlowResult:
         """Handle a device found by background discovery."""
+        device = cast(DiscoveryDevice, discovery_info)
         LOGGER.debug(
             "ConfigFlow.integration_discovery: ip=%s mac=%s",
-            discovery_info.ip,
-            discovery_info.mac,
+            device.ip,
+            device.mac,
         )
-        await self.async_set_unique_id(dr.format_mac(discovery_info.mac))
+        await self.async_set_unique_id(dr.format_mac(device.mac))
         self._abort_if_unique_id_configured(updates={})
-        self._confirm_device = discovery_info
-        self.context["title_placeholders"] = {"name": _entry_title(discovery_info)}
+        self._confirm_device = device
+        self.context["title_placeholders"] = {"name": _entry_title(device)}
         return await self.async_step_confirm()
 
     @override
-    async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
-    ) -> ConfigFlowResult:
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Show discovered devices or fall through to manual entry."""
         LOGGER.debug("ConfigFlow.user: user_input=%s", user_input)
         if user_input is not None:
@@ -263,9 +263,7 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
             menu_options=["scan", "user_manual"],
         )
 
-    async def async_step_scan(
-        self, user_input: dict[str, Any] | None = None
-    ) -> ConfigFlowResult:
+    async def async_step_scan(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Re-run discovery and return to the device list."""
         LOGGER.debug("ConfigFlow.scan: re-running discovery")
         return await self.async_step_user()
@@ -322,7 +320,9 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             device = await discover_host(user_input[CONF_HOST], timeout=1.0)
             if device is None:
-                LOGGER.warning("ConfigFlow.user_manual: device not discovered at %s", user_input[CONF_HOST])
+                LOGGER.warning(
+                    "ConfigFlow.user_manual: device not discovered at %s", user_input[CONF_HOST]
+                )
             errors, snapshot = await _validate_connection(
                 user_input[CONF_HOST],
                 user_input[CONF_PORT],
@@ -334,9 +334,7 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
             if not errors and snapshot is not None:
                 mac = device.mac if device is not None else snapshot.mac
 
-                LOGGER.debug(
-                    "ConfigFlow.user_manual: device=%s mac=%s", device, mac
-                )
+                LOGGER.debug("ConfigFlow.user_manual: device=%s mac=%s", device, mac)
                 if not mac:
                     errors = {"base": "cannot_identify"}
                 else:
@@ -413,7 +411,8 @@ class ComApOptionsFlow(OptionsFlow):
         ctrl = self.coordinator.ctrl
 
         entity_values = [
-            v for v in ctrl.values
+            v
+            for v in ctrl.values
             if v.category is not ValueCategory.ONE_TIME
             and v.data_type not in _SKIP_TYPES
             and entity_key(v.name) is not None
@@ -425,7 +424,8 @@ class ComApOptionsFlow(OptionsFlow):
         ]
 
         entity_setpoints = [
-            s for s in ctrl.setpoints
+            s
+            for s in ctrl.setpoints
             if (s.data_type in _NUMERIC_TYPES or s.data_type is DataType.STRING_LIST)
             and entity_key(s.name) is not None
         ]
@@ -462,9 +462,7 @@ class ComApOptionsFlow(OptionsFlow):
             and (s.group or GROUP_UNGROUPED) in DEFAULT_SETPOINT_GROUPS
         }
 
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> ConfigFlowResult:
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
         """Collect password, poll interval, and optional entity configuration."""
         LOGGER.debug("OptionsFlow.init: user_input=%s", user_input)
         if user_input is not None:
@@ -531,8 +529,7 @@ class ComApOptionsFlow(OptionsFlow):
         ]
         default = [str(v.number) for v in group_values if v.number in self._enabled_values]
         is_last = (
-            self._current_value_group == len(self._value_groups) - 1
-            and not self._setpoint_groups
+            self._current_value_group == len(self._value_groups) - 1 and not self._setpoint_groups
         )
         return self.async_show_form(
             step_id="value_group",

@@ -79,7 +79,7 @@ class ComApValueSensor(ComApEntity, SensorEntity):
     @callback
     def _handle_coordinator_update(self) -> None:
         value = self.coordinator.data.values.get(self._desc.number)
-        self._attr_native_value = value
+        self._attr_native_value = None if isinstance(value, bytes) else value
         self.async_write_ha_state()
 
 

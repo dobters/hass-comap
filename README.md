@@ -1,5 +1,7 @@
 # ComAp Home Assistant Integration
 
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+
 Home Assistant custom integration for ComAp generator controllers (InteliLite AMF25 and compatible) using the native TCP protocol.
 
 ## Features
@@ -27,6 +29,8 @@ Home Assistant custom integration for ComAp generator controllers (InteliLite AM
 - ComAp InteliLite AMF25 (or compatible) reachable over LAN on TCP port 23
 
 ## Installation via HACS
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=dobters&repository=hass-comap&category=integration)
 
 1. Add this repository as a custom repository in HACS (type: Integration)
 2. Search for **ComAp** and install

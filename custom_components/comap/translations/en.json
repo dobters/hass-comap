@@ -1956,7 +1956,7 @@
           "scan": "Scan again",
           "user_manual": "Enter manually"
         }
-      },
+      }
     },
     "error": {
       "cannot_connect": "Failed to connect",

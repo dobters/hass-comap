@@ -3,6 +3,10 @@ set shell := ["bash", "-c"]
 default:
     @just --list
 
+install:
+    uv sync --no-sources
+    uv run pre-commit install
+
 [private]
 prepare:
     @uv sync --group dev --frozen --quiet

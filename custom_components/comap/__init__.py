@@ -9,7 +9,9 @@ from typing import TYPE_CHECKING, Any
 from homeassistant import config_entries
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_SCAN_INTERVAL, Platform
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers import device_registry as dr, discovery_flow
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import discovery_flow
 from homeassistant.helpers.event import async_track_time_interval
 from pycomap import (
     ComApAuthError,
@@ -35,6 +37,9 @@ if TYPE_CHECKING:
     from homeassistant.config_entries import ConfigEntry
     from homeassistant.core import HomeAssistant
     from homeassistant.helpers.typing import ConfigType
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Start background discovery at startup and on a repeating interval."""
@@ -103,6 +108,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ComApConfigEntry) -> boo
 
     entry.runtime_data = coordinator
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
     async def _reload_entry(hass: HomeAssistant, entry: ComApConfigEntry) -> None:
         await hass.config_entries.async_reload(entry.entry_id)
 

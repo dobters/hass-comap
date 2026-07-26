@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import cast
+
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -16,15 +18,16 @@ class ComApEntity(CoordinatorEntity[ComApCoordinator]):
 
     def __init__(self, coordinator: ComApCoordinator, unique_key: str) -> None:
         super().__init__(coordinator)
-        self._attr_unique_id = f"{coordinator.config_entry.unique_id}_{unique_key}"
+        unique_id = cast(str, coordinator.config_entry.unique_id)
+        self._attr_unique_id = f"{unique_id}_{unique_key}"
         serial = coordinator.config_entry.data.get(CONF_SERIAL)
         self._attr_device_info = dr.DeviceInfo(
-            identifiers={(DOMAIN, coordinator.config_entry.unique_id)},
+            identifiers={(DOMAIN, unique_id)},
             name=coordinator.config_entry.title,
             manufacturer="ComAp",
             model=coordinator.model,
             model_id=coordinator.model_id,
             serial_number=str(serial) if serial is not None else None,
-            connections={(dr.CONNECTION_NETWORK_MAC, coordinator.config_entry.unique_id)},
+            connections={(dr.CONNECTION_NETWORK_MAC, unique_id)},
             sw_version=coordinator.sw_version,
         )

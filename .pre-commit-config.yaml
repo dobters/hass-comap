@@ -17,7 +17,7 @@ repos:
       files: ^(uv\.lock|pyproject\.toml|uv\.toml)$
       pass_filenames: false
     - id: sync-meta
-      name: Sync manifest.json, hacs.json, .python-version from pyproject.toml
+      name: Sync meta
       language: python
       entry: python scripts/sync_meta.py
       files: ^(pyproject\.toml|uv\.lock)$
