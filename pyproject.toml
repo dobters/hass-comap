@@ -1,0 +1,55 @@
+[project]
+name = "hass-comap"
+version = "1.0.0"
+description = "Home Assistant integration for ComAp controllers"
+readme = "README.md"
+license = "MIT"
+authors = [
+    { name = "Igor Panteleyev", email = "panteleev.igor69@gmail.com" }
+]
+requires-python = ">=3.14.2"
+dependencies = [
+    "pycomap>=2.3.1",
+]
+
+[tool.uv]
+package = false
+
+# [tool.uv.sources]
+# pycomap = { path = "../pycomap", editable = true }
+
+[dependency-groups]
+dev = [
+    "homeassistant>=2026.6.0",
+    "pre-commit>=4.6.0",
+    "pytest-homeassistant-custom-component>=0.13.109",
+    "ruff>=0.15",
+    "ty>=0.0.16",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "I",   # isort
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "RUF", # ruff-specific
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["custom_components.comap"]
+
+[tool.ty.environment]
+python-version = "3.14"

@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+docker/config/
+.ruff_cache/
+.pytest_cache/
+.ty_cache/
+htmlcov/
+.coverage
+.idea/
+.playwright-mcp/

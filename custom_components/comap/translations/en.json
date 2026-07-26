@@ -1,0 +1,2001 @@
+{
+  "entity": {
+    "sensor": {
+      "airgate_id": {
+        "name": "AirGate ID"
+      },
+      "airgate_status": {
+        "name": "AirGate Status"
+      },
+      "alarm_count": {
+        "name": "Alarm Count"
+      },
+      "altitude": {
+        "name": "Altitude"
+      },
+      "application_mode": {
+        "name": "Application Mode"
+      },
+      "batteryvoltage": {
+        "name": "BatteryVoltage"
+      },
+      "breaker_state": {
+        "name": "Breaker State"
+      },
+      "cell_diag_code": {
+        "name": "Cell Diag Code"
+      },
+      "cell_errorrate": {
+        "name": "Cell ErrorRate"
+      },
+      "cell_signal_lev": {
+        "name": "Cell Signal Lev"
+      },
+      "cell_status": {
+        "name": "Cell Status"
+      },
+      "cm_and_em_modules": {
+        "name": "CM and EM modules"
+      },
+      "connection_type": {
+        "name": "Connection Type"
+      },
+      "controler_mode": {
+        "name": "Controler Mode"
+      },
+      "cu_analog_input_1_lim_level": {
+        "name": "CU Analog Input 1 Lim Level"
+      },
+      "cu_analog_input_1_wrn_level": {
+        "name": "CU Analog Input 1 Wrn Level"
+      },
+      "cu_analog_input_2_lim_level": {
+        "name": "CU Analog Input 2 Lim Level"
+      },
+      "cu_analog_input_2_wrn_level": {
+        "name": "CU Analog Input 2 Wrn Level"
+      },
+      "cu_analog_input_3_lim_level": {
+        "name": "CU Analog Input 3 Lim Level"
+      },
+      "cu_analog_input_3_wrn_level": {
+        "name": "CU Analog Input 3 Wrn Level"
+      },
+      "cu_analog_input_4_lim_level": {
+        "name": "CU Analog Input 4 Lim Level"
+      },
+      "cu_analog_input_4_wrn_level": {
+        "name": "CU Analog Input 4 Wrn Level"
+      },
+      "cu_temperature": {
+        "name": "CU Temperature"
+      },
+      "current_dns": {
+        "name": "Current DNS"
+      },
+      "current_gateway": {
+        "name": "Current Gateway"
+      },
+      "current_ip_address": {
+        "name": "Current IP Address"
+      },
+      "current_subnet_mask": {
+        "name": "Current Subnet Mask"
+      },
+      "d_plus": {
+        "name": "D+"
+      },
+      "day": {
+        "name": "Day"
+      },
+      "def_level": {
+        "name": "DEF Level"
+      },
+      "dpf1_ash_load": {
+        "name": "DPF1 Ash Load"
+      },
+      "dpf1_soot_load": {
+        "name": "DPF1 Soot Load"
+      },
+      "earth_fault_current": {
+        "name": "Earth Fault Current"
+      },
+      "ecu_bin_13": {
+        "name": "ECU-BIN 13"
+      },
+      "ecu_bin_14": {
+        "name": "ECU-BIN 14"
+      },
+      "ecu_bin_15": {
+        "name": "ECU-BIN 15"
+      },
+      "ecu_bin_16": {
+        "name": "ECU-BIN 16"
+      },
+      "ecu_bin_17": {
+        "name": "ECU-BIN 17"
+      },
+      "ecu_bin_18": {
+        "name": "ECU-BIN 18"
+      },
+      "ecu_bin_19": {
+        "name": "ECU-BIN 19"
+      },
+      "ecu_bin_20": {
+        "name": "ECU-BIN 20"
+      },
+      "ecu_bin_21": {
+        "name": "ECU-BIN 21"
+      },
+      "ecu_bin_22": {
+        "name": "ECU-BIN 22"
+      },
+      "ecu_bin_23": {
+        "name": "ECU-BIN 23"
+      },
+      "ecu_bin_24": {
+        "name": "ECU-BIN 24"
+      },
+      "ecu_bin_25": {
+        "name": "ECU-BIN 25"
+      },
+      "ecu_bin_26": {
+        "name": "ECU-BIN 26"
+      },
+      "ecu_bin_27": {
+        "name": "ECU-BIN 27"
+      },
+      "ecu_bin_28": {
+        "name": "ECU-BIN 28"
+      },
+      "ecu_bin_29": {
+        "name": "ECU-BIN 29"
+      },
+      "ecu_bin_30": {
+        "name": "ECU-BIN 30"
+      },
+      "ecu_bin_31": {
+        "name": "ECU-BIN 31"
+      },
+      "ecu_bin_32": {
+        "name": "ECU-BIN 32"
+      },
+      "ecu_fc": {
+        "name": "ECU FC"
+      },
+      "ecu_fmi": {
+        "name": "ECU FMI"
+      },
+      "ecu_freqselect": {
+        "name": "ECU FreqSelect"
+      },
+      "em_analog_input_a_1": {
+        "name": "EM Analog Input A 1"
+      },
+      "em_analog_input_a_10": {
+        "name": "EM Analog Input A 10"
+      },
+      "em_analog_input_a_11": {
+        "name": "EM Analog Input A 11"
+      },
+      "em_analog_input_a_12": {
+        "name": "EM Analog Input A 12"
+      },
+      "em_analog_input_a_13": {
+        "name": "EM Analog Input A 13"
+      },
+      "em_analog_input_a_14": {
+        "name": "EM Analog Input A 14"
+      },
+      "em_analog_input_a_15": {
+        "name": "EM Analog Input A 15"
+      },
+      "em_analog_input_a_16": {
+        "name": "EM Analog Input A 16"
+      },
+      "em_analog_input_a_2": {
+        "name": "EM Analog Input A 2"
+      },
+      "em_analog_input_a_3": {
+        "name": "EM Analog Input A 3"
+      },
+      "em_analog_input_a_4": {
+        "name": "EM Analog Input A 4"
+      },
+      "em_analog_input_a_5": {
+        "name": "EM Analog Input A 5"
+      },
+      "em_analog_input_a_6": {
+        "name": "EM Analog Input A 6"
+      },
+      "em_analog_input_a_7": {
+        "name": "EM Analog Input A 7"
+      },
+      "em_analog_input_a_8": {
+        "name": "EM Analog Input A 8"
+      },
+      "em_analog_input_a_9": {
+        "name": "EM Analog Input A 9"
+      },
+      "em_analog_input_b_1": {
+        "name": "EM Analog Input B 1"
+      },
+      "em_analog_input_b_10": {
+        "name": "EM Analog Input B 10"
+      },
+      "em_analog_input_b_11": {
+        "name": "EM Analog Input B 11"
+      },
+      "em_analog_input_b_12": {
+        "name": "EM Analog Input B 12"
+      },
+      "em_analog_input_b_13": {
+        "name": "EM Analog Input B 13"
+      },
+      "em_analog_input_b_14": {
+        "name": "EM Analog Input B 14"
+      },
+      "em_analog_input_b_15": {
+        "name": "EM Analog Input B 15"
+      },
+      "em_analog_input_b_16": {
+        "name": "EM Analog Input B 16"
+      },
+      "em_analog_input_b_2": {
+        "name": "EM Analog Input B 2"
+      },
+      "em_analog_input_b_3": {
+        "name": "EM Analog Input B 3"
+      },
+      "em_analog_input_b_4": {
+        "name": "EM Analog Input B 4"
+      },
+      "em_analog_input_b_5": {
+        "name": "EM Analog Input B 5"
+      },
+      "em_analog_input_b_6": {
+        "name": "EM Analog Input B 6"
+      },
+      "em_analog_input_b_7": {
+        "name": "EM Analog Input B 7"
+      },
+      "em_analog_input_b_8": {
+        "name": "EM Analog Input B 8"
+      },
+      "em_analog_input_b_9": {
+        "name": "EM Analog Input B 9"
+      },
+      "engine_state": {
+        "name": "Engine State"
+      },
+      "eth_interface_status": {
+        "name": "ETH Interface Status"
+      },
+      "generator_frequency": {
+        "name": "Generator Frequency"
+      },
+      "generator_frequency_raw": {
+        "name": "Generator Frequency RAW"
+      },
+      "generator_voltage_l1_l2": {
+        "name": "Generator Voltage L1-L2"
+      },
+      "generator_voltage_l1_l2_raw": {
+        "name": "Generator Voltage L1-L2 RAW"
+      },
+      "generator_voltage_l1_n": {
+        "name": "Generator Voltage L1-N"
+      },
+      "generator_voltage_l1_n_raw": {
+        "name": "Generator Voltage L1-N RAW"
+      },
+      "generator_voltage_l2_l3": {
+        "name": "Generator Voltage L2-L3"
+      },
+      "generator_voltage_l2_l3_raw": {
+        "name": "Generator Voltage L2-L3 RAW"
+      },
+      "generator_voltage_l2_n": {
+        "name": "Generator Voltage L2-N"
+      },
+      "generator_voltage_l2_n_raw": {
+        "name": "Generator Voltage L2-N RAW"
+      },
+      "generator_voltage_l3_l1": {
+        "name": "Generator Voltage L3-L1"
+      },
+      "generator_voltage_l3_l1_raw": {
+        "name": "Generator Voltage L3-L1 RAW"
+      },
+      "generator_voltage_l3_n": {
+        "name": "Generator Voltage L3-N"
+      },
+      "generator_voltage_l3_n_raw": {
+        "name": "Generator Voltage L3-N RAW"
+      },
+      "genset_kvarh": {
+        "name": "Genset kVArh"
+      },
+      "genset_kwh": {
+        "name": "Genset kWh"
+      },
+      "gsm_diag_code": {
+        "name": "GSM Diag Code"
+      },
+      "gsm_errorrate": {
+        "name": "GSM ErrorRate"
+      },
+      "gsm_signal_level": {
+        "name": "GSM Signal Level"
+      },
+      "gsm_status": {
+        "name": "GSM Status"
+      },
+      "homeposdist": {
+        "name": "HomePosDist"
+      },
+      "hours": {
+        "name": "Hours"
+      },
+      "igmax": {
+        "name": "IgMax"
+      },
+      "last_e_mail_result": {
+        "name": "Last E-mail Result"
+      },
+      "latitude": {
+        "name": "Latitude"
+      },
+      "load_a_l1": {
+        "name": "Load A L1"
+      },
+      "load_a_l2": {
+        "name": "Load A L2"
+      },
+      "load_a_l3": {
+        "name": "Load A L3"
+      },
+      "load_characteristic": {
+        "name": "Load Characteristic"
+      },
+      "load_characteristic_l1": {
+        "name": "Load Characteristic L1"
+      },
+      "load_characteristic_l2": {
+        "name": "Load Characteristic L2"
+      },
+      "load_characteristic_l3": {
+        "name": "Load Characteristic L3"
+      },
+      "load_kva": {
+        "name": "Load kVA"
+      },
+      "load_kva_l1": {
+        "name": "Load kVA L1"
+      },
+      "load_kva_l1_raw": {
+        "name": "Load kVA L1 RAW"
+      },
+      "load_kva_l2": {
+        "name": "Load kVA L2"
+      },
+      "load_kva_l2_raw": {
+        "name": "Load kVA L2 RAW"
+      },
+      "load_kva_l3": {
+        "name": "Load kVA L3"
+      },
+      "load_kva_l3_raw": {
+        "name": "Load kVA L3 RAW"
+      },
+      "load_kva_raw": {
+        "name": "Load kVA RAW"
+      },
+      "load_kvar": {
+        "name": "Load kVAr"
+      },
+      "load_kvar_l1": {
+        "name": "Load kVAr L1"
+      },
+      "load_kvar_l1_raw": {
+        "name": "Load kVAr L1 RAW"
+      },
+      "load_kvar_l2": {
+        "name": "Load kVAr L2"
+      },
+      "load_kvar_l2_raw": {
+        "name": "Load kVAr L2 RAW"
+      },
+      "load_kvar_l3": {
+        "name": "Load kVAr L3"
+      },
+      "load_kvar_l3_raw": {
+        "name": "Load kVAr L3 RAW"
+      },
+      "load_kvar_raw": {
+        "name": "Load kVAr RAW"
+      },
+      "load_kw": {
+        "name": "Load kW"
+      },
+      "load_kw_l1": {
+        "name": "Load kW L1"
+      },
+      "load_kw_l1_raw": {
+        "name": "Load kW L1 RAW"
+      },
+      "load_kw_l2": {
+        "name": "Load kW L2"
+      },
+      "load_kw_l2_raw": {
+        "name": "Load kW L2 RAW"
+      },
+      "load_kw_l3": {
+        "name": "Load kW L3"
+      },
+      "load_kw_l3_raw": {
+        "name": "Load kW L3 RAW"
+      },
+      "load_kw_raw": {
+        "name": "Load kW RAW"
+      },
+      "load_power_factor": {
+        "name": "Load Power Factor"
+      },
+      "load_power_factor_l1": {
+        "name": "Load Power Factor L1"
+      },
+      "load_power_factor_l2": {
+        "name": "Load Power Factor L2"
+      },
+      "load_power_factor_l3": {
+        "name": "Load Power Factor L3"
+      },
+      "longitude": {
+        "name": "Longitude"
+      },
+      "mac_address": {
+        "name": "MAC Address"
+      },
+      "mains_frequency": {
+        "name": "Mains Frequency"
+      },
+      "mains_kvarh": {
+        "name": "Mains kVArh"
+      },
+      "mains_kwh": {
+        "name": "Mains kWh"
+      },
+      "mains_voltage_l1_l2": {
+        "name": "Mains Voltage L1-L2"
+      },
+      "mains_voltage_l1_n": {
+        "name": "Mains Voltage L1-N"
+      },
+      "mains_voltage_l2_l3": {
+        "name": "Mains Voltage L2-L3"
+      },
+      "mains_voltage_l2_n": {
+        "name": "Mains Voltage L2-N"
+      },
+      "mains_voltage_l3_l1": {
+        "name": "Mains Voltage L3-L1"
+      },
+      "mains_voltage_l3_n": {
+        "name": "Mains Voltage L3-N"
+      },
+      "maintenance_1": {
+        "name": "Maintenance 1"
+      },
+      "maintenance_2": {
+        "name": "Maintenance 2"
+      },
+      "maintenance_3": {
+        "name": "Maintenance 3"
+      },
+      "master_running_hours": {
+        "name": "Master Running Hours"
+      },
+      "minutes": {
+        "name": "Minutes"
+      },
+      "month": {
+        "name": "Month"
+      },
+      "nominal_current": {
+        "name": "Nominal Current"
+      },
+      "nominal_power": {
+        "name": "Nominal Power"
+      },
+      "nominal_voltage": {
+        "name": "Nominal Voltage"
+      },
+      "num_e_stops": {
+        "name": "Num E-Stops"
+      },
+      "num_starts": {
+        "name": "Num Starts"
+      },
+      "operator": {
+        "name": "Operator"
+      },
+      "password_decode": {
+        "name": "Password Decode"
+      },
+      "plc_aout_1": {
+        "name": "PLC-AOUT 1"
+      },
+      "plc_aout_10": {
+        "name": "PLC-AOUT 10"
+      },
+      "plc_aout_11": {
+        "name": "PLC-AOUT 11"
+      },
+      "plc_aout_12": {
+        "name": "PLC-AOUT 12"
+      },
+      "plc_aout_13": {
+        "name": "PLC-AOUT 13"
+      },
+      "plc_aout_14": {
+        "name": "PLC-AOUT 14"
+      },
+      "plc_aout_15": {
+        "name": "PLC-AOUT 15"
+      },
+      "plc_aout_16": {
+        "name": "PLC-AOUT 16"
+      },
+      "plc_aout_17": {
+        "name": "PLC-AOUT 17"
+      },
+      "plc_aout_18": {
+        "name": "PLC-AOUT 18"
+      },
+      "plc_aout_19": {
+        "name": "PLC-AOUT 19"
+      },
+      "plc_aout_2": {
+        "name": "PLC-AOUT 2"
+      },
+      "plc_aout_20": {
+        "name": "PLC-AOUT 20"
+      },
+      "plc_aout_21": {
+        "name": "PLC-AOUT 21"
+      },
+      "plc_aout_22": {
+        "name": "PLC-AOUT 22"
+      },
+      "plc_aout_23": {
+        "name": "PLC-AOUT 23"
+      },
+      "plc_aout_24": {
+        "name": "PLC-AOUT 24"
+      },
+      "plc_aout_25": {
+        "name": "PLC-AOUT 25"
+      },
+      "plc_aout_26": {
+        "name": "PLC-AOUT 26"
+      },
+      "plc_aout_27": {
+        "name": "PLC-AOUT 27"
+      },
+      "plc_aout_28": {
+        "name": "PLC-AOUT 28"
+      },
+      "plc_aout_29": {
+        "name": "PLC-AOUT 29"
+      },
+      "plc_aout_3": {
+        "name": "PLC-AOUT 3"
+      },
+      "plc_aout_30": {
+        "name": "PLC-AOUT 30"
+      },
+      "plc_aout_31": {
+        "name": "PLC-AOUT 31"
+      },
+      "plc_aout_32": {
+        "name": "PLC-AOUT 32"
+      },
+      "plc_aout_4": {
+        "name": "PLC-AOUT 4"
+      },
+      "plc_aout_5": {
+        "name": "PLC-AOUT 5"
+      },
+      "plc_aout_6": {
+        "name": "PLC-AOUT 6"
+      },
+      "plc_aout_7": {
+        "name": "PLC-AOUT 7"
+      },
+      "plc_aout_8": {
+        "name": "PLC-AOUT 8"
+      },
+      "plc_aout_9": {
+        "name": "PLC-AOUT 9"
+      },
+      "plc_resource_1": {
+        "name": "PLC Resource 1"
+      },
+      "plc_resource_2": {
+        "name": "PLC Resource 2"
+      },
+      "plc_resource_3": {
+        "name": "PLC Resource 3"
+      },
+      "plc_resource_4": {
+        "name": "PLC Resource 4"
+      },
+      "plc_resource_5": {
+        "name": "PLC Resource 5"
+      },
+      "plc_resource_6": {
+        "name": "PLC Resource 6"
+      },
+      "plc_resource_7": {
+        "name": "PLC Resource 7"
+      },
+      "plc_resource_8": {
+        "name": "PLC Resource 8"
+      },
+      "pulse_counter_1": {
+        "name": "Pulse Counter 1"
+      },
+      "pulse_counter_2": {
+        "name": "Pulse Counter 2"
+      },
+      "rental_1": {
+        "name": "Rental 1"
+      },
+      "rental_2": {
+        "name": "Rental 2"
+      },
+      "reserved": {
+        "name": "Reserved"
+      },
+      "rpm": {
+        "name": "RPM"
+      },
+      "running_hours": {
+        "name": "Running Hours"
+      },
+      "running_hours_to_swap": {
+        "name": "Running Hours To Swap"
+      },
+      "satellites": {
+        "name": "Satellites"
+      },
+      "seconds": {
+        "name": "Seconds"
+      },
+      "shutdowns": {
+        "name": "Shutdowns"
+      },
+      "slave_running_hours": {
+        "name": "Slave Running Hours"
+      },
+      "speed_request": {
+        "name": "Speed Request"
+      },
+      "speedreq_rpm": {
+        "name": "SpeedReq RPM"
+      },
+      "spi_module_a": {
+        "name": "SPI Module A"
+      },
+      "spi_module_b": {
+        "name": "SPI Module B"
+      },
+      "terminal_features": {
+        "name": "Terminal Features"
+      },
+      "time_till_empty": {
+        "name": "Time Till Empty"
+      },
+      "timer_text": {
+        "name": "Timer Text"
+      },
+      "timer_value": {
+        "name": "Timer Value"
+      },
+      "total_fuel_consumption": {
+        "name": "Total Fuel Consumption"
+      },
+      "years_since_1985": {
+        "name": "Years since 1985"
+      }
+    },
+    "number": {
+      "after_cooling_time": {
+        "name": "After Cooling Time"
+      },
+      "ain_prot01_delay": {
+        "name": "AIN Prot01 Delay"
+      },
+      "ain_prot01_sd": {
+        "name": "AIN Prot01 Sd"
+      },
+      "ain_prot01_wrn": {
+        "name": "AIN Prot01 Wrn"
+      },
+      "ain_prot02_delay": {
+        "name": "AIN Prot02 Delay"
+      },
+      "ain_prot02_sd": {
+        "name": "AIN Prot02 Sd"
+      },
+      "ain_prot02_wrn": {
+        "name": "AIN Prot02 Wrn"
+      },
+      "ain_prot03_delay": {
+        "name": "AIN Prot03 Delay"
+      },
+      "ain_prot03_sd": {
+        "name": "AIN Prot03 Sd"
+      },
+      "ain_prot03_wrn": {
+        "name": "AIN Prot03 Wrn"
+      },
+      "ain_prot04_delay": {
+        "name": "AIN Prot04 Delay"
+      },
+      "ain_prot04_sd": {
+        "name": "AIN Prot04 Sd"
+      },
+      "ain_prot04_wrn": {
+        "name": "AIN Prot04 Wrn"
+      },
+      "ain_prot05_delay": {
+        "name": "AIN Prot05 Delay"
+      },
+      "ain_prot05_sd": {
+        "name": "AIN Prot05 Sd"
+      },
+      "ain_prot05_wrn": {
+        "name": "AIN Prot05 Wrn"
+      },
+      "ain_prot06_delay": {
+        "name": "AIN Prot06 Delay"
+      },
+      "ain_prot06_sd": {
+        "name": "AIN Prot06 Sd"
+      },
+      "ain_prot06_wrn": {
+        "name": "AIN Prot06 Wrn"
+      },
+      "ain_prot07_delay": {
+        "name": "AIN Prot07 Delay"
+      },
+      "ain_prot07_sd": {
+        "name": "AIN Prot07 Sd"
+      },
+      "ain_prot07_wrn": {
+        "name": "AIN Prot07 Wrn"
+      },
+      "ain_prot08_delay": {
+        "name": "AIN Prot08 Delay"
+      },
+      "ain_prot08_sd": {
+        "name": "AIN Prot08 Sd"
+      },
+      "ain_prot08_wrn": {
+        "name": "AIN Prot08 Wrn"
+      },
+      "ain_prot09_delay": {
+        "name": "AIN Prot09 Delay"
+      },
+      "ain_prot09_sd": {
+        "name": "AIN Prot09 Sd"
+      },
+      "ain_prot09_wrn": {
+        "name": "AIN Prot09 Wrn"
+      },
+      "ain_prot10_delay": {
+        "name": "AIN Prot10 Delay"
+      },
+      "ain_prot10_sd": {
+        "name": "AIN Prot10 Sd"
+      },
+      "ain_prot10_wrn": {
+        "name": "AIN Prot10 Wrn"
+      },
+      "ain_prot11_delay": {
+        "name": "AIN Prot11 Delay"
+      },
+      "ain_prot11_sd": {
+        "name": "AIN Prot11 Sd"
+      },
+      "ain_prot11_wrn": {
+        "name": "AIN Prot11 Wrn"
+      },
+      "ain_prot12_delay": {
+        "name": "AIN Prot12 Delay"
+      },
+      "ain_prot12_sd": {
+        "name": "AIN Prot12 Sd"
+      },
+      "ain_prot12_wrn": {
+        "name": "AIN Prot12 Wrn"
+      },
+      "ain_prot13_delay": {
+        "name": "AIN Prot13 Delay"
+      },
+      "ain_prot13_sd": {
+        "name": "AIN Prot13 Sd"
+      },
+      "ain_prot13_wrn": {
+        "name": "AIN Prot13 Wrn"
+      },
+      "ain_prot14_delay": {
+        "name": "AIN Prot14 Delay"
+      },
+      "ain_prot14_sd": {
+        "name": "AIN Prot14 Sd"
+      },
+      "ain_prot14_wrn": {
+        "name": "AIN Prot14 Wrn"
+      },
+      "ain_prot15_delay": {
+        "name": "AIN Prot15 Delay"
+      },
+      "ain_prot15_sd": {
+        "name": "AIN Prot15 Sd"
+      },
+      "ain_prot15_wrn": {
+        "name": "AIN Prot15 Wrn"
+      },
+      "ain_prot16_delay": {
+        "name": "AIN Prot16 Delay"
+      },
+      "ain_prot16_sd": {
+        "name": "AIN Prot16 Sd"
+      },
+      "ain_prot16_wrn": {
+        "name": "AIN Prot16 Wrn"
+      },
+      "ain_prot17_delay": {
+        "name": "AIN Prot17 Delay"
+      },
+      "ain_prot17_sd": {
+        "name": "AIN Prot17 Sd"
+      },
+      "ain_prot17_wrn": {
+        "name": "AIN Prot17 Wrn"
+      },
+      "ain_prot18_delay": {
+        "name": "AIN Prot18 Delay"
+      },
+      "ain_prot18_sd": {
+        "name": "AIN Prot18 Sd"
+      },
+      "ain_prot18_wrn": {
+        "name": "AIN Prot18 Wrn"
+      },
+      "ain_prot19_delay": {
+        "name": "AIN Prot19 Delay"
+      },
+      "ain_prot19_sd": {
+        "name": "AIN Prot19 Sd"
+      },
+      "ain_prot19_wrn": {
+        "name": "AIN Prot19 Wrn"
+      },
+      "ain_prot20_delay": {
+        "name": "AIN Prot20 Delay"
+      },
+      "ain_prot20_sd": {
+        "name": "AIN Prot20 Sd"
+      },
+      "ain_prot20_wrn": {
+        "name": "AIN Prot20 Wrn"
+      },
+      "ain_switch01_off": {
+        "name": "AIN Switch01 Off"
+      },
+      "ain_switch01_on": {
+        "name": "AIN Switch01 On"
+      },
+      "ain_switch02_off": {
+        "name": "AIN Switch02 Off"
+      },
+      "ain_switch02_on": {
+        "name": "AIN Switch02 On"
+      },
+      "ain_switch03_off": {
+        "name": "AIN Switch03 Off"
+      },
+      "ain_switch03_on": {
+        "name": "AIN Switch03 On"
+      },
+      "ain_switch04_off": {
+        "name": "AIN Switch04 Off"
+      },
+      "ain_switch04_on": {
+        "name": "AIN Switch04 On"
+      },
+      "ain_switch05_off": {
+        "name": "AIN Switch05 Off"
+      },
+      "ain_switch05_on": {
+        "name": "AIN Switch05 On"
+      },
+      "ain_switch06_off": {
+        "name": "AIN Switch06 Off"
+      },
+      "ain_switch06_on": {
+        "name": "AIN Switch06 On"
+      },
+      "ain_switch07_off": {
+        "name": "AIN Switch07 Off"
+      },
+      "ain_switch07_on": {
+        "name": "AIN Switch07 On"
+      },
+      "ain_switch08_off": {
+        "name": "AIN Switch08 Off"
+      },
+      "ain_switch08_on": {
+        "name": "AIN Switch08 On"
+      },
+      "ain_switch09_off": {
+        "name": "AIN Switch09 Off"
+      },
+      "ain_switch09_on": {
+        "name": "AIN Switch09 On"
+      },
+      "ain_switch10_off": {
+        "name": "AIN Switch10 Off"
+      },
+      "ain_switch10_on": {
+        "name": "AIN Switch10 On"
+      },
+      "ain_switch11_off": {
+        "name": "AIN Switch11 Off"
+      },
+      "ain_switch11_on": {
+        "name": "AIN Switch11 On"
+      },
+      "ain_switch12_off": {
+        "name": "AIN Switch12 Off"
+      },
+      "ain_switch12_on": {
+        "name": "AIN Switch12 On"
+      },
+      "ain_switch13_off": {
+        "name": "AIN Switch13 Off"
+      },
+      "ain_switch13_on": {
+        "name": "AIN Switch13 On"
+      },
+      "ain_switch14_off": {
+        "name": "AIN Switch14 Off"
+      },
+      "ain_switch14_on": {
+        "name": "AIN Switch14 On"
+      },
+      "ain_switch15_off": {
+        "name": "AIN Switch15 Off"
+      },
+      "ain_switch15_on": {
+        "name": "AIN Switch15 On"
+      },
+      "ain_switch16_off": {
+        "name": "AIN Switch16 Off"
+      },
+      "ain_switch16_on": {
+        "name": "AIN Switch16 On"
+      },
+      "ain_switch17_off": {
+        "name": "AIN Switch17 Off"
+      },
+      "ain_switch17_on": {
+        "name": "AIN Switch17 On"
+      },
+      "ain_switch18_off": {
+        "name": "AIN Switch18 Off"
+      },
+      "ain_switch18_on": {
+        "name": "AIN Switch18 On"
+      },
+      "ain_switch19_off": {
+        "name": "AIN Switch19 Off"
+      },
+      "ain_switch19_on": {
+        "name": "AIN Switch19 On"
+      },
+      "ain_switch20_off": {
+        "name": "AIN Switch20 Off"
+      },
+      "ain_switch20_on": {
+        "name": "AIN Switch20 On"
+      },
+      "backlight_timeout": {
+        "name": "Backlight Timeout"
+      },
+      "battery_charger_fail_delay": {
+        "name": "Battery Charger Fail Delay"
+      },
+      "battery_delta_voltage_delay": {
+        "name": "Battery <> Voltage Delay"
+      },
+      "battery_overvoltage": {
+        "name": "Battery Overvoltage"
+      },
+      "battery_undervoltage": {
+        "name": "Battery Undervoltage"
+      },
+      "choke_increment": {
+        "name": "Choke Increment"
+      },
+      "choke_lead": {
+        "name": "Choke Lead"
+      },
+      "choke_start_temp": {
+        "name": "Choke Start Temp"
+      },
+      "choke_time": {
+        "name": "Choke Time"
+      },
+      "choke_voltage": {
+        "name": "Choke Voltage"
+      },
+      "comap_tcp_port": {
+        "name": "ComAp TCP Port"
+      },
+      "controller_address": {
+        "name": "Controller Address"
+      },
+      "conversion_coefficient_pulse_1": {
+        "name": "Conversion Coefficient Pulse 1"
+      },
+      "conversion_coefficient_pulse_2": {
+        "name": "Conversion Coefficient Pulse 2"
+      },
+      "coolant_temperature_boc": {
+        "name": "Coolant Temperature BOC"
+      },
+      "coolant_temperature_delay": {
+        "name": "Coolant Temperature Delay"
+      },
+      "coolant_temperature_low_delay": {
+        "name": "Coolant Temperature Low Delay"
+      },
+      "coolant_temperature_low_wrn": {
+        "name": "Coolant Temperature Low Wrn"
+      },
+      "coolant_temperature_wrn": {
+        "name": "Coolant Temperature Wrn"
+      },
+      "cooling_time": {
+        "name": "Cooling Time"
+      },
+      "cranking_attempts": {
+        "name": "Cranking Attempts"
+      },
+      "cranking_fail_pause": {
+        "name": "Cranking Fail Pause"
+      },
+      "ct_ratio": {
+        "name": "CT Ratio"
+      },
+      "cu_ain1_calibration": {
+        "name": "CU AIN1 Calibration"
+      },
+      "cu_ain2_calibration": {
+        "name": "CU AIN2 Calibration"
+      },
+      "cu_ain3_calibration": {
+        "name": "CU AIN3 Calibration"
+      },
+      "cu_ain4_calibration": {
+        "name": "CU AIN4 Calibration"
+      },
+      "current_unbalance_boc": {
+        "name": "Current Unbalance BOC"
+      },
+      "current_unbalance_boc_delay": {
+        "name": "Current Unbalance BOC Delay"
+      },
+      "d_plus_delay": {
+        "name": "D+ Delay"
+      },
+      "d_plus_threshold": {
+        "name": "D+ Threshold"
+      },
+      "earth_fault_ct_ratio": {
+        "name": "Earth Fault CT Ratio"
+      },
+      "earth_fault_delay": {
+        "name": "Earth Fault Delay"
+      },
+      "earth_fault_sd": {
+        "name": "Earth Fault Sd"
+      },
+      "ecu_coolant_temperature_boc": {
+        "name": "ECU Coolant Temperature BOC"
+      },
+      "ecu_coolant_temperature_delay": {
+        "name": "ECU Coolant Temperature Delay"
+      },
+      "ecu_coolant_temperature_wrn": {
+        "name": "ECU Coolant Temperature Wrn"
+      },
+      "ecu_fuel_level_boc": {
+        "name": "ECU Fuel Level BOC"
+      },
+      "ecu_fuel_level_delay": {
+        "name": "ECU Fuel Level Delay"
+      },
+      "ecu_fuel_level_wrn": {
+        "name": "ECU Fuel Level Wrn"
+      },
+      "ecu_oil_pressure_delay": {
+        "name": "ECU Oil Pressure Delay"
+      },
+      "ecu_oil_pressure_sd": {
+        "name": "ECU Oil Pressure Sd"
+      },
+      "ecu_oil_pressure_wrn": {
+        "name": "ECU Oil Pressure Wrn"
+      },
+      "ecu_speed_adjustment": {
+        "name": "ECU Speed Adjustment"
+      },
+      "ecu_speed_adjustment_1": {
+        "name": "ECU Speed Adjustment 1"
+      },
+      "ecu_speed_adjustment_2": {
+        "name": "ECU Speed Adjustment 2"
+      },
+      "ecu_speed_adjustment_3": {
+        "name": "ECU Speed Adjustment 3"
+      },
+      "emergency_start_delay": {
+        "name": "Emergency Start Delay"
+      },
+      "fence_1_delay": {
+        "name": "Fence 1 Delay"
+      },
+      "fence_2_delay": {
+        "name": "Fence 2 Delay"
+      },
+      "fence_radius_1": {
+        "name": "Fence Radius 1"
+      },
+      "fence_radius_2": {
+        "name": "Fence Radius 2"
+      },
+      "fuel_level_boc": {
+        "name": "Fuel Level BOC"
+      },
+      "fuel_level_delay": {
+        "name": "Fuel Level Delay"
+      },
+      "fuel_level_wrn": {
+        "name": "Fuel Level Wrn"
+      },
+      "fuel_pump_off": {
+        "name": "Fuel Pump Off"
+      },
+      "fuel_pump_on": {
+        "name": "Fuel Pump On"
+      },
+      "fuel_solenoid_lead": {
+        "name": "Fuel Solenoid Lead"
+      },
+      "fuel_tank_volume": {
+        "name": "Fuel Tank Volume"
+      },
+      "gear_teeth": {
+        "name": "Gear Teeth"
+      },
+      "generator_delta_frequency_delay": {
+        "name": "Generator <> Frequency Delay"
+      },
+      "generator_delta_voltage_delay": {
+        "name": "Generator <> Voltage Delay"
+      },
+      "generator_overfrequency_boc": {
+        "name": "Generator Overfrequency BOC"
+      },
+      "generator_overfrequency_wrn": {
+        "name": "Generator Overfrequency Wrn"
+      },
+      "generator_overvoltage_sd": {
+        "name": "Generator Overvoltage Sd"
+      },
+      "generator_overvoltage_wrn": {
+        "name": "Generator Overvoltage Wrn"
+      },
+      "generator_underfrequency_boc": {
+        "name": "Generator Underfrequency BOC"
+      },
+      "generator_underfrequency_wrn": {
+        "name": "Generator Underfrequency Wrn"
+      },
+      "generator_undervoltage_boc": {
+        "name": "Generator Undervoltage BOC"
+      },
+      "generator_undervoltage_wrn": {
+        "name": "Generator Undervoltage Wrn"
+      },
+      "glow_plugs_time": {
+        "name": "Glow Plugs Time"
+      },
+      "hmi_languague": {
+        "name": "HMI Languague"
+      },
+      "home_latitude": {
+        "name": "Home Latitude"
+      },
+      "home_longitude": {
+        "name": "Home Longitude"
+      },
+      "horn_timeout": {
+        "name": "Horn Timeout"
+      },
+      "idle_rpm": {
+        "name": "Idle RPM"
+      },
+      "idle_time": {
+        "name": "Idle Time"
+      },
+      "idmt_overcurrent": {
+        "name": "IDMT Overcurrent"
+      },
+      "mains_delta_frequency_delay": {
+        "name": "Mains <> Frequency Delay"
+      },
+      "mains_delta_voltage_delay": {
+        "name": "Mains <> Voltage Delay"
+      },
+      "mains_overfrequency": {
+        "name": "Mains Overfrequency"
+      },
+      "mains_overvoltage": {
+        "name": "Mains Overvoltage"
+      },
+      "mains_return_delay": {
+        "name": "Mains Return Delay"
+      },
+      "mains_underfrequency": {
+        "name": "Mains Underfrequency"
+      },
+      "mains_undervoltage": {
+        "name": "Mains Undervoltage"
+      },
+      "mains_voltage_unbalance": {
+        "name": "Mains Voltage Unbalance"
+      },
+      "mains_voltage_unbalance_delay": {
+        "name": "Mains Voltage Unbalance Delay"
+      },
+      "maintenance_timer_1": {
+        "name": "Maintenance Timer 1"
+      },
+      "maintenance_timer_2": {
+        "name": "Maintenance Timer 2"
+      },
+      "maintenance_timer_3": {
+        "name": "Maintenance Timer 3"
+      },
+      "maximal_fuel_drop": {
+        "name": "Maximal Fuel Drop"
+      },
+      "maximal_fuel_drop_delay": {
+        "name": "Maximal Fuel Drop Delay"
+      },
+      "maximal_stabilization_time": {
+        "name": "Maximal Stabilization Time"
+      },
+      "maximum_cranking_time": {
+        "name": "Maximum Cranking Time"
+      },
+      "mcb_close_delay": {
+        "name": "MCB Close Delay"
+      },
+      "minimal_stabilization_time": {
+        "name": "Minimal Stabilization Time"
+      },
+      "nominal_current": {
+        "name": "Nominal Current"
+      },
+      "nominal_current_1": {
+        "name": "Nominal Current 1"
+      },
+      "nominal_current_2": {
+        "name": "Nominal Current 2"
+      },
+      "nominal_current_3": {
+        "name": "Nominal Current 3"
+      },
+      "nominal_frequency": {
+        "name": "Nominal Frequency"
+      },
+      "nominal_frequency_1": {
+        "name": "Nominal Frequency 1"
+      },
+      "nominal_frequency_2": {
+        "name": "Nominal Frequency 2"
+      },
+      "nominal_frequency_3": {
+        "name": "Nominal Frequency 3"
+      },
+      "nominal_power": {
+        "name": "Nominal Power"
+      },
+      "nominal_power_1": {
+        "name": "Nominal Power 1"
+      },
+      "nominal_power_2": {
+        "name": "Nominal Power 2"
+      },
+      "nominal_power_3": {
+        "name": "Nominal Power 3"
+      },
+      "nominal_power_split_phase": {
+        "name": "Nominal Power Split Phase"
+      },
+      "nominal_power_split_phase_1": {
+        "name": "Nominal Power Split Phase 1"
+      },
+      "nominal_power_split_phase_2": {
+        "name": "Nominal Power Split Phase 2"
+      },
+      "nominal_power_split_phase_3": {
+        "name": "Nominal Power Split Phase 3"
+      },
+      "nominal_rpm": {
+        "name": "Nominal RPM"
+      },
+      "nominal_rpm_1": {
+        "name": "Nominal RPM 1"
+      },
+      "nominal_rpm_2": {
+        "name": "Nominal RPM 2"
+      },
+      "nominal_rpm_3": {
+        "name": "Nominal RPM 3"
+      },
+      "nominal_voltage_ph_n": {
+        "name": "Nominal Voltage Ph-N"
+      },
+      "nominal_voltage_ph_n_1": {
+        "name": "Nominal Voltage Ph-N 1"
+      },
+      "nominal_voltage_ph_n_2": {
+        "name": "Nominal Voltage Ph-N 2"
+      },
+      "nominal_voltage_ph_n_3": {
+        "name": "Nominal Voltage Ph-N 3"
+      },
+      "nominal_voltage_ph_ph": {
+        "name": "Nominal Voltage Ph-Ph"
+      },
+      "nominal_voltage_ph_ph_1": {
+        "name": "Nominal Voltage Ph-Ph 1"
+      },
+      "nominal_voltage_ph_ph_2": {
+        "name": "Nominal Voltage Ph-Ph 2"
+      },
+      "nominal_voltage_ph_ph_3": {
+        "name": "Nominal Voltage Ph-Ph 3"
+      },
+      "oil_pressure_delay": {
+        "name": "Oil Pressure Delay"
+      },
+      "oil_pressure_sd": {
+        "name": "Oil Pressure Sd"
+      },
+      "oil_pressure_wrn": {
+        "name": "Oil Pressure Wrn"
+      },
+      "overload_boc": {
+        "name": "Overload BOC"
+      },
+      "overload_delay": {
+        "name": "Overload Delay"
+      },
+      "overload_wrn": {
+        "name": "Overload Wrn"
+      },
+      "overspeed_overshoot": {
+        "name": "Overspeed Overshoot"
+      },
+      "overspeed_overshoot_period": {
+        "name": "Overspeed Overshoot Period"
+      },
+      "overspeed_sd": {
+        "name": "Overspeed Sd"
+      },
+      "plc_parametr_10": {
+        "name": "PLC Parametr 10"
+      },
+      "plc_parametr_11": {
+        "name": "PLC Parametr 11"
+      },
+      "plc_parametr_12": {
+        "name": "PLC Parametr 12"
+      },
+      "plc_parametr_13": {
+        "name": "PLC Parametr 13"
+      },
+      "plc_parametr_14": {
+        "name": "PLC Parametr 14"
+      },
+      "plc_parametr_15": {
+        "name": "PLC Parametr 15"
+      },
+      "plc_parametr_16": {
+        "name": "PLC Parametr 16"
+      },
+      "plc_parametr_17": {
+        "name": "PLC Parametr 17"
+      },
+      "plc_parametr_18": {
+        "name": "PLC Parametr 18"
+      },
+      "plc_parametr_19": {
+        "name": "PLC Parametr 19"
+      },
+      "plc_parametr_20": {
+        "name": "PLC Parametr 20"
+      },
+      "plc_parametr_21": {
+        "name": "PLC Parametr 21"
+      },
+      "plc_parametr_22": {
+        "name": "PLC Parametr 22"
+      },
+      "plc_parametr_23": {
+        "name": "PLC Parametr 23"
+      },
+      "plc_parametr_24": {
+        "name": "PLC Parametr 24"
+      },
+      "plc_parametr_25": {
+        "name": "PLC Parametr 25"
+      },
+      "plc_parametr_26": {
+        "name": "PLC Parametr 26"
+      },
+      "plc_parametr_27": {
+        "name": "PLC Parametr 27"
+      },
+      "plc_parametr_28": {
+        "name": "PLC Parametr 28"
+      },
+      "plc_parametr_29": {
+        "name": "PLC Parametr 29"
+      },
+      "plc_parametr_3": {
+        "name": "PLC Parametr 3"
+      },
+      "plc_parametr_30": {
+        "name": "PLC Parametr 30"
+      },
+      "plc_parametr_31": {
+        "name": "PLC Parametr 31"
+      },
+      "plc_parametr_32": {
+        "name": "PLC Parametr 32"
+      },
+      "plc_parametr_33": {
+        "name": "PLC Parametr 33"
+      },
+      "plc_parametr_34": {
+        "name": "PLC Parametr 34"
+      },
+      "plc_parametr_35": {
+        "name": "PLC Parametr 35"
+      },
+      "plc_parametr_36": {
+        "name": "PLC Parametr 36"
+      },
+      "plc_parametr_37": {
+        "name": "PLC Parametr 37"
+      },
+      "plc_parametr_38": {
+        "name": "PLC Parametr 38"
+      },
+      "plc_parametr_39": {
+        "name": "PLC Parametr 39"
+      },
+      "plc_parametr_4": {
+        "name": "PLC Parametr 4"
+      },
+      "plc_parametr_40": {
+        "name": "PLC Parametr 40"
+      },
+      "plc_parametr_41": {
+        "name": "PLC Parametr 41"
+      },
+      "plc_parametr_42": {
+        "name": "PLC Parametr 42"
+      },
+      "plc_parametr_43": {
+        "name": "PLC Parametr 43"
+      },
+      "plc_parametr_44": {
+        "name": "PLC Parametr 44"
+      },
+      "plc_parametr_45": {
+        "name": "PLC Parametr 45"
+      },
+      "plc_parametr_46": {
+        "name": "PLC Parametr 46"
+      },
+      "plc_parametr_47": {
+        "name": "PLC Parametr 47"
+      },
+      "plc_parametr_48": {
+        "name": "PLC Parametr 48"
+      },
+      "plc_parametr_49": {
+        "name": "PLC Parametr 49"
+      },
+      "plc_parametr_5": {
+        "name": "PLC Parametr 5"
+      },
+      "plc_parametr_50": {
+        "name": "PLC Parametr 50"
+      },
+      "plc_parametr_51": {
+        "name": "PLC Parametr 51"
+      },
+      "plc_parametr_52": {
+        "name": "PLC Parametr 52"
+      },
+      "plc_parametr_53": {
+        "name": "PLC Parametr 53"
+      },
+      "plc_parametr_54": {
+        "name": "PLC Parametr 54"
+      },
+      "plc_parametr_55": {
+        "name": "PLC Parametr 55"
+      },
+      "plc_parametr_56": {
+        "name": "PLC Parametr 56"
+      },
+      "plc_parametr_57": {
+        "name": "PLC Parametr 57"
+      },
+      "plc_parametr_58": {
+        "name": "PLC Parametr 58"
+      },
+      "plc_parametr_59": {
+        "name": "PLC Parametr 59"
+      },
+      "plc_parametr_6": {
+        "name": "PLC Parametr 6"
+      },
+      "plc_parametr_60": {
+        "name": "PLC Parametr 60"
+      },
+      "plc_parametr_61": {
+        "name": "PLC Parametr 61"
+      },
+      "plc_parametr_62": {
+        "name": "PLC Parametr 62"
+      },
+      "plc_parametr_63": {
+        "name": "PLC Parametr 63"
+      },
+      "plc_parametr_64": {
+        "name": "PLC Parametr 64"
+      },
+      "plc_parametr_7": {
+        "name": "PLC Parametr 7"
+      },
+      "plc_parametr_8": {
+        "name": "PLC Parametr 8"
+      },
+      "plc_parametr_9": {
+        "name": "PLC Parametr 9"
+      },
+      "power_switch_off": {
+        "name": "Power Switch Off"
+      },
+      "power_switch_on": {
+        "name": "Power Switch On"
+      },
+      "prestart_time": {
+        "name": "Prestart Time"
+      },
+      "protection_hold_off": {
+        "name": "Protection Hold Off"
+      },
+      "pt_ratio": {
+        "name": "PT Ratio"
+      },
+      "rental_timer_1": {
+        "name": "Rental Timer 1"
+      },
+      "rental_timer_1_wrn": {
+        "name": "Rental Timer 1 Wrn"
+      },
+      "rental_timer_boc": {
+        "name": "Rental Timer BOC"
+      },
+      "running_hours_base": {
+        "name": "Running Hours Base"
+      },
+      "running_hours_max_difference": {
+        "name": "Running Hours Max Difference"
+      },
+      "screen_filter_tau": {
+        "name": "Screen Filter Tau"
+      },
+      "sd_ventilation_time": {
+        "name": "Sd Ventilation Time"
+      },
+      "short_circuit_boc": {
+        "name": "Short Circuit BOC"
+      },
+      "short_circuit_boc_delay": {
+        "name": "Short Circuit BOC Delay"
+      },
+      "ssanie": {
+        "name": "Ssanie"
+      },
+      "starting_oil_pressure": {
+        "name": "Starting Oil Pressure"
+      },
+      "starting_rpm": {
+        "name": "Starting RPM"
+      },
+      "stop_puls": {
+        "name": "Stop_puls"
+      },
+      "stop_time": {
+        "name": "Stop Time"
+      },
+      "temperature_switch_off": {
+        "name": "Temperature Switch Off"
+      },
+      "temperature_switch_on": {
+        "name": "Temperature Switch On"
+      },
+      "time_stamp_period": {
+        "name": "Time Stamp Period"
+      },
+      "transfer_delay": {
+        "name": "Transfer Delay"
+      },
+      "transfer_wrn_delay": {
+        "name": "Transfer Wrn Delay"
+      },
+      "underspeed_sd": {
+        "name": "Underspeed Sd"
+      },
+      "user_mode": {
+        "name": "User Mode"
+      },
+      "ventilation_pulse_time": {
+        "name": "Ventilation Pulse Time"
+      },
+      "vm_pt_ratio": {
+        "name": "Vm PT Ratio"
+      },
+      "voltage_unbalance_boc": {
+        "name": "Voltage Unbalance BOC"
+      },
+      "voltage_unbalance_boc_delay": {
+        "name": "Voltage Unbalance BOC Delay"
+      },
+      "zero_power_mode": {
+        "name": "Zero Power Mode"
+      }
+    },
+    "select": {
+      "airgate_connection": {
+        "name": "AirGate Connection"
+      },
+      "boc_message": {
+        "name": "BOC Message"
+      },
+      "choke_function": {
+        "name": "Choke Function"
+      },
+      "com_1_communication_speed": {
+        "name": "COM 1 Communication Speed"
+      },
+      "com_1_modbus_communication_speed": {
+        "name": "COM 1 MODBUS Communication Speed"
+      },
+      "com_1_mode": {
+        "name": "COM 1 Mode"
+      },
+      "com_2_communication_speed": {
+        "name": "COM 2 Communication Speed"
+      },
+      "com_2_modbus_communication_speed": {
+        "name": "COM 2 MODBUS Communication Speed"
+      },
+      "com_2_mode": {
+        "name": "COM 2 Mode"
+      },
+      "connection_type": {
+        "name": "Connection Type"
+      },
+      "connection_type_1": {
+        "name": "Connection Type 1"
+      },
+      "connection_type_2": {
+        "name": "Connection Type 2"
+      },
+      "connection_type_3": {
+        "name": "Connection Type 3"
+      },
+      "controller_mode": {
+        "name": "Controller Mode"
+      },
+      "cooling_speed": {
+        "name": "Cooling Speed"
+      },
+      "ct_location": {
+        "name": "CT Location"
+      },
+      "current_unbalance_protection": {
+        "name": "Current Unbalance Protection"
+      },
+      "d_plus_alarm_type": {
+        "name": "D+ Alarm Type"
+      },
+      "d_plus_function": {
+        "name": "D+ Function"
+      },
+      "earth_fault_ct_input_range": {
+        "name": "Earth Fault CT Input Range"
+      },
+      "earth_fault_current_protection": {
+        "name": "Earth Fault Current Protection"
+      },
+      "event_message": {
+        "name": "Event Message"
+      },
+      "fence_1_protection": {
+        "name": "Fence 1 Protection"
+      },
+      "fence_2_protection": {
+        "name": "Fence 2 Protection"
+      },
+      "fuel_solenoid": {
+        "name": "Fuel Solenoid"
+      },
+      "generator_delta_voltage_protection": {
+        "name": "Generator <> Voltage Protection"
+      },
+      "generator_frequency_protection": {
+        "name": "Generator Frequency Protection"
+      },
+      "geo_fencing": {
+        "name": "Geo-Fencing"
+      },
+      "idmt_overcurrent_protection": {
+        "name": "IDMT Overcurrent Protection"
+      },
+      "internet_connection": {
+        "name": "Internet Connection"
+      },
+      "ip_address_mode": {
+        "name": "IP Address Mode"
+      },
+      "main_screen_line_1": {
+        "name": "Main Screen Line 1"
+      },
+      "main_screen_line_2": {
+        "name": "Main Screen Line 2"
+      },
+      "master_error_protection": {
+        "name": "Master Error Protection"
+      },
+      "mcb_logic": {
+        "name": "MCB Logic"
+      },
+      "mcb_opens_on": {
+        "name": "MCB Opens On"
+      },
+      "message_language": {
+        "name": "Message Language"
+      },
+      "modbus_server": {
+        "name": "MODBUS Server"
+      },
+      "operation_mode": {
+        "name": "Operation Mode"
+      },
+      "overload_protection": {
+        "name": "Overload Protection"
+      },
+      "overspeed_protection": {
+        "name": "Overspeed Protection"
+      },
+      "power_on_mode": {
+        "name": "Power On Mode"
+      },
+      "required_connection_type": {
+        "name": "Required Connection Type"
+      },
+      "reset_to_manual": {
+        "name": "Reset To Manual"
+      },
+      "return_from_island": {
+        "name": "Return From Island"
+      },
+      "return_from_test": {
+        "name": "Return From TEST"
+      },
+      "runhourssource": {
+        "name": "RunHoursSource"
+      },
+      "screen_filter": {
+        "name": "Screen Filter"
+      },
+      "sd_message": {
+        "name": "Sd Message"
+      },
+      "short_circuit_protection": {
+        "name": "Short Circuit Protection"
+      },
+      "slave_error_protection": {
+        "name": "Slave Error Protection"
+      },
+      "slot_a": {
+        "name": "Slot A"
+      },
+      "slot_b": {
+        "name": "Slot B"
+      },
+      "snmp_agent": {
+        "name": "SNMP Agent"
+      },
+      "snmp_trap_format": {
+        "name": "SNMP Trap Format"
+      },
+      "summer_time_mode": {
+        "name": "Summer Time Mode"
+      },
+      "swap_gen_sets": {
+        "name": "Swap Gen-sets"
+      },
+      "time_zone": {
+        "name": "Time Zone"
+      },
+      "timer_1_function": {
+        "name": "Timer 1 Function"
+      },
+      "timer_2_function": {
+        "name": "Timer 2 Function"
+      },
+      "underspeed_protection": {
+        "name": "Underspeed Protection"
+      },
+      "voltage_unbalance_protection": {
+        "name": "Voltage Unbalance Protection"
+      },
+      "web_interface": {
+        "name": "Web Interface"
+      },
+      "wrn_message": {
+        "name": "Wrn Message"
+      }
+    },
+    "button": {
+      "fault_reset": {
+        "name": "Fault Reset"
+      },
+      "horn_reset": {
+        "name": "Horn Reset"
+      },
+      "engine_start": {
+        "name": "Engine Start"
+      },
+      "engine_stop": {
+        "name": "Engine Stop"
+      },
+      "gcb_on": {
+        "name": "GCB On"
+      },
+      "gcb_off": {
+        "name": "GCB Off"
+      },
+      "mcb_on": {
+        "name": "MCB On"
+      },
+      "mcb_off": {
+        "name": "MCB Off"
+      }
+    }
+  },
+  "config": {
+    "step": {
+      "user": {
+        "title": "Select Controller",
+        "data": {
+          "device": "Discovered controllers"
+        }
+      },
+      "user_manual": {
+        "title": "ComAp Controller",
+        "data": {
+          "host": "IP Address",
+          "port": "Port",
+          "controller_address": "Controller Address",
+          "access_code": "Access Code",
+          "password": "Write Password (optional)"
+        },
+        "data_description": {
+          "controller_address": "Unit address 1–32 (default 1). Change only if the controller's ControllerAddress setpoint differs from the factory default.",
+          "password": "Required to write setpoints."
+        }
+      },
+      "confirm": {
+        "title": "Confirm ComAp Controller",
+        "data": {
+          "host": "IP Address",
+          "port": "Port",
+          "controller_address": "Controller Address",
+          "access_code": "Access Code",
+          "password": "Write Password (optional)"
+        },
+        "data_description": {
+          "controller_address": "Unit address 1–32 (default 1). Change only if the controller's ControllerAddress setpoint differs from the factory default."
+        }
+      },
+      "no_devices": {
+        "title": "No devices found",
+        "description": "No ComAp controllers were discovered on the network.",
+        "menu_options": {
+          "scan": "Scan again",
+          "user_manual": "Enter manually"
+        }
+      },
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid access code",
+      "unknown": "Unexpected error",
+      "cannot_identify": "Controller responded to TCP but did not reply to the discovery probe \u2014 cannot determine MAC address",
+      "invalid_password": "Invalid password"
+    },
+    "abort": {
+      "already_configured": "Controller is already configured",
+      "already_in_progress": "Configuration already in progress"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ComAp Options",
+        "data": {
+          "scan_interval": "Poll Interval (seconds)",
+          "configure_entities": "Configure entities"
+        },
+        "data_description": {
+          "configure_entities": "If checked, you can enable or disable individual values and setpoints on the next screens."
+        }
+      },
+      "value_group": {
+        "title": "Values — {group}",
+        "description": "Select which values to expose from the **{group}** group.",
+        "data": {
+          "enabled": "Enabled values"
+        }
+      },
+      "setpoint_group": {
+        "title": "Setpoints — {group}",
+        "description": "Select which setpoints to expose from the **{group}** group.",
+        "data": {
+          "enabled": "Enabled setpoints"
+        }
+      }
+    }
+  }
+}

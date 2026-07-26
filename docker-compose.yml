@@ -1,0 +1,13 @@
+services:
+  homeassistant:
+    image: ghcr.io/home-assistant/home-assistant:stable
+    container_name: hass_comap_dev
+    restart: unless-stopped
+    volumes:
+      - ./docker/config:/config
+      - ./custom_components/comap:/config/custom_components/comap:ro
+    environment:
+      - TZ=Europe/Kyiv
+    ports:
+      - "8123:8123"
+    network_mode: bridge

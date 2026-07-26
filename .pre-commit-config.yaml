@@ -1,0 +1,40 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-toml
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+- repo: local
+  hooks:
+    - id: uv-lock
+      name: uv-lock
+      entry: uv lock
+      language: system
+      files: ^(uv\.lock|pyproject\.toml|uv\.toml)$
+      pass_filenames: false
+    - id: sync-meta
+      name: Sync manifest.json, hacs.json, .python-version from pyproject.toml
+      language: python
+      entry: python scripts/sync_meta.py
+      files: ^(pyproject\.toml|uv\.lock)$
+      pass_filenames: false
+    - id: ruff-check
+      name: ruff check
+      entry: uv run ruff check --fix
+      language: system
+      types: [python]
+    - id: ruff-format
+      name: ruff format
+      entry: uv run ruff format
+      language: system
+      types: [python]
+    - id: ty
+      name: ty check
+      entry: uv run ty check
+      language: system
+      types: [python]
+      pass_filenames: false
