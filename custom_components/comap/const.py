@@ -32,13 +32,24 @@ CONF_CONTROLLER_ADDRESS = "controller_address"
 CONF_VALUES = "values"
 CONF_SETPOINTS = "setpoints"
 
-DEFAULT_VALUE_GROUPS = frozenset({
-    "Generator", "Mains", "Load", "Statistics",
-    "Controller I/O", "IL Info", "Engine",
-})
-DEFAULT_SETPOINT_GROUPS = frozenset({
-    "Statistics", "Basic Settings", "AMF Settings",
-})
+DEFAULT_VALUE_GROUPS = frozenset(
+    {
+        "Generator",
+        "Mains",
+        "Load",
+        "Statistics",
+        "Controller I/O",
+        "IL Info",
+        "Engine",
+    }
+)
+DEFAULT_SETPOINT_GROUPS = frozenset(
+    {
+        "Statistics",
+        "Basic Settings",
+        "AMF Settings",
+    }
+)
 
 DEFAULT_SCAN_INTERVAL = 10
 DEFAULT_PORT = 23

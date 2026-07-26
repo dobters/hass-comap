@@ -3,13 +3,13 @@
 from ipaddress import IPv4Address
 from unittest.mock import AsyncMock, patch
 
-from custom_components.comap.config_flow import _CtrlSnapshot
-
+from homeassistant.config_entries import ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from pycomap.discovery import AccessType, DeviceType, DiscoveryDevice, DiscoveryUnit
 
+from custom_components.comap.config_flow import _CtrlSnapshot
 from custom_components.comap.const import CONF_ACCESS_CODE, DEFAULT_PORT, DOMAIN
 
 _MOCK_DEVICE = DiscoveryDevice(
@@ -39,7 +39,7 @@ def _mock_snapshot(mac: str | None = "aa:bb:cc:dd:ee:ff") -> _CtrlSnapshot:
     return _CtrlSnapshot(values=[], setpoints=[], mac=mac)
 
 
-async def _init_to_manual(hass: HomeAssistant, flow_id: str) -> dict:
+async def _init_to_manual(hass: HomeAssistant, flow_id: str) -> ConfigFlowResult:
     """Navigate the no_devices menu to the user_manual step."""
     result = await hass.config_entries.flow.async_configure(
         flow_id, {"next_step_id": "user_manual"}
@@ -48,7 +48,7 @@ async def _init_to_manual(hass: HomeAssistant, flow_id: str) -> dict:
     return result
 
 
-async def _submit_group_pages(hass: HomeAssistant, flow_id: str) -> dict:
+async def _submit_group_pages(hass: HomeAssistant, flow_id: str) -> ConfigFlowResult:
     """Submit both group selection pages with empty input (all defaults).
 
     Only called when the mock ctrl exposes at least one value/setpoint so
@@ -105,9 +105,7 @@ async def test_manual_entry_creates_entry(hass: HomeAssistant) -> None:
         result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
         await _init_to_manual(hass, result["flow_id"])
         # Empty snapshot → both group schemas are empty → flow skips to create entry.
-        result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], _MANUAL_INPUT
-        )
+        result = await hass.config_entries.flow.async_configure(result["flow_id"], _MANUAL_INPUT)
 
     assert result["type"] == FlowResultType.CREATE_ENTRY
     assert result["title"] == "AMF25"
@@ -129,9 +127,7 @@ async def test_manual_entry_cannot_connect(hass: HomeAssistant) -> None:
     ):
         result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
         await _init_to_manual(hass, result["flow_id"])
-        result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], _MANUAL_INPUT
-        )
+        result = await hass.config_entries.flow.async_configure(result["flow_id"], _MANUAL_INPUT)
 
     assert result["type"] == FlowResultType.FORM
     assert result["errors"] == {"base": "cannot_connect"}
@@ -152,9 +148,7 @@ async def test_manual_entry_cannot_identify(hass: HomeAssistant) -> None:
     ):
         result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
         await _init_to_manual(hass, result["flow_id"])
-        result = await hass.config_entries.flow.async_configure(
-            result["flow_id"], _MANUAL_INPUT
-        )
+        result = await hass.config_entries.flow.async_configure(result["flow_id"], _MANUAL_INPUT)
 
     assert result["type"] == FlowResultType.FORM
     assert result["errors"] == {"base": "cannot_identify"}
