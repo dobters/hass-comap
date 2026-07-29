@@ -1963,7 +1963,8 @@
       "invalid_auth": "Invalid access code",
       "unknown": "Unexpected error",
       "cannot_identify": "Controller responded to TCP but did not reply to the discovery probe \u2014 cannot determine MAC address",
-      "invalid_password": "Invalid password"
+      "invalid_password": "Invalid password",
+      "invalid_host": "Invalid IP address"
     },
     "abort": {
       "already_configured": "Controller is already configured",
