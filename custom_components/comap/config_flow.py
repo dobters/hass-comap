@@ -63,13 +63,12 @@ from .utils import GROUP_UNGROUPED, collect_groups, entity_key
 _MANUAL_ENTRY = "__manual__"
 _CONF_CONFIGURE_ENTITIES = "configure_entities"
 
-_HOST_VALIDATOR = vol.All(str, vol.Coerce(IPv4Address))
+_HOST_SELECTOR = TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT))
 _PORT_SELECTOR = vol.All(
     NumberSelector(NumberSelectorConfig(min=1, max=65535, step=1, mode=NumberSelectorMode.BOX)),
     vol.Coerce(int),
 )
 _HIDDEN_SELECTOR = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
-_PASSWORD_VALIDATOR = vol.All(_HIDDEN_SELECTOR, lambda v: v or None, vol.Any(None, vol.Coerce(int)))
 
 _SKIP_TYPES = frozenset({DataType.FTIME, DataType.FDATE, DataType.TIMER})
 _NUMERIC_TYPES = frozenset(
@@ -93,7 +92,7 @@ def _credentials_schema(
     host_key = vol.Required(CONF_HOST) if host is None else vol.Required(CONF_HOST, default=host)
     return vol.Schema(
         {
-            host_key: _HOST_VALIDATOR,
+            host_key: _HOST_SELECTOR,
             vol.Required(CONF_PORT, default=port): _PORT_SELECTOR,
             vol.Required(CONF_CONTROLLER_ADDRESS, default=controller_address): vol.All(
                 NumberSelector(
@@ -102,7 +101,7 @@ def _credentials_schema(
                 vol.Coerce(int),
             ),
             vol.Required(CONF_ACCESS_CODE, default="0"): _HIDDEN_SELECTOR,
-            vol.Optional(CONF_PASSWORD): _PASSWORD_VALIDATOR,
+            vol.Optional(CONF_PASSWORD): _HIDDEN_SELECTOR,
         }
     )
 
@@ -115,6 +114,23 @@ class _CtrlSnapshot:
     values: list
     setpoints: list
     mac: str | None
+
+
+def _parse_host(value: str) -> IPv4Address | None:
+    try:
+        return IPv4Address(value)
+    except ValueError:
+        return None
+
+
+def _parse_password(value: str | None) -> int | None:
+    """Return the coerced password, or ``None`` if blank.
+
+    Raises:
+        ValueError: if `value` is non-blank and not a valid integer.
+
+    """
+    return int(value) if value else None
 
 
 def _entry_title(device: DiscoveryDevice) -> str:
@@ -278,29 +294,41 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            errors, snapshot = await _validate_connection(
-                user_input[CONF_HOST],
-                user_input[CONF_PORT],
-                user_input[CONF_CONTROLLER_ADDRESS],
-                user_input[CONF_ACCESS_CODE],
-                user_input.get(CONF_PASSWORD),
-            )
-            LOGGER.debug("ConfigFlow.confirm: validation errors=%s", errors)
-            if not errors and snapshot is not None:
-                await self.async_set_unique_id(dr.format_mac(device_data.mac))
-                self._abort_if_unique_id_configured()
-                self._entry_data = {
-                    **user_input,
-                    CONF_HOST: str(user_input[CONF_HOST]),
-                    CONF_SERIAL: device_data.serial_number,
-                }
-                self._pending_options = {
-                    CONF_VALUES: _default_enabled_values(snapshot.values),
-                    CONF_SETPOINTS: _default_enabled_setpoints(snapshot.setpoints),
-                }
-                return self._config_create_entry()
-            elif not errors:
-                errors = {"base": "unknown"}
+            host = _parse_host(user_input[CONF_HOST])
+            if host is None:
+                errors[CONF_HOST] = "invalid_host"
+
+            password: int | None = None
+            try:
+                password = _parse_password(user_input.get(CONF_PASSWORD))
+            except ValueError:
+                errors[CONF_PASSWORD] = "invalid_password"
+
+            if host is not None and not errors:
+                errors, snapshot = await _validate_connection(
+                    host,
+                    user_input[CONF_PORT],
+                    user_input[CONF_CONTROLLER_ADDRESS],
+                    user_input[CONF_ACCESS_CODE],
+                    password,
+                )
+                LOGGER.debug("ConfigFlow.confirm: validation errors=%s", errors)
+                if not errors and snapshot is not None:
+                    await self.async_set_unique_id(dr.format_mac(device_data.mac))
+                    self._abort_if_unique_id_configured()
+                    self._entry_data = {
+                        **user_input,
+                        CONF_HOST: str(host),
+                        CONF_PASSWORD: password,
+                        CONF_SERIAL: device_data.serial_number,
+                    }
+                    self._pending_options = {
+                        CONF_VALUES: _default_enabled_values(snapshot.values),
+                        CONF_SETPOINTS: _default_enabled_setpoints(snapshot.setpoints),
+                    }
+                    return self._config_create_entry()
+                elif not errors:
+                    errors = {"base": "unknown"}
 
         schema = _credentials_schema(host=str(device_data.ip), port=device_data.comm_port)
         return self.async_show_form(
@@ -318,42 +346,52 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
 
         if user_input is not None:
-            device = await discover_host(user_input[CONF_HOST], timeout=1.0)
-            if device is None:
-                LOGGER.warning(
-                    "ConfigFlow.user_manual: device not discovered at %s", user_input[CONF_HOST]
-                )
-            errors, snapshot = await _validate_connection(
-                user_input[CONF_HOST],
-                user_input[CONF_PORT],
-                user_input[CONF_CONTROLLER_ADDRESS],
-                user_input[CONF_ACCESS_CODE],
-                user_input.get(CONF_PASSWORD),
-            )
-            LOGGER.debug("ConfigFlow.user_manual: validation errors=%s", errors)
-            if not errors and snapshot is not None:
-                mac = device.mac if device is not None else snapshot.mac
+            host = _parse_host(user_input[CONF_HOST])
+            if host is None:
+                errors[CONF_HOST] = "invalid_host"
 
-                LOGGER.debug("ConfigFlow.user_manual: device=%s mac=%s", device, mac)
-                if not mac:
-                    errors = {"base": "cannot_identify"}
-                else:
-                    self._confirm_device = device
-                    await self.async_set_unique_id(dr.format_mac(mac))
-                    self._abort_if_unique_id_configured()
-                    serial = device.serial_number if device is not None else None
-                    self._entry_data = {
-                        **user_input,
-                        CONF_HOST: str(user_input[CONF_HOST]),
-                        CONF_SERIAL: serial,
-                    }
-                    self._pending_options = {
-                        CONF_VALUES: _default_enabled_values(snapshot.values),
-                        CONF_SETPOINTS: _default_enabled_setpoints(snapshot.setpoints),
-                    }
-                    return self._config_create_entry()
-            elif not errors:
-                errors = {"base": "unknown"}
+            password: int | None = None
+            try:
+                password = _parse_password(user_input.get(CONF_PASSWORD))
+            except ValueError:
+                errors[CONF_PASSWORD] = "invalid_password"
+
+            if host is not None and not errors:
+                device = await discover_host(host, timeout=1.0)
+                if device is None:
+                    LOGGER.warning("ConfigFlow.user_manual: device not discovered at %s", host)
+                errors, snapshot = await _validate_connection(
+                    host,
+                    user_input[CONF_PORT],
+                    user_input[CONF_CONTROLLER_ADDRESS],
+                    user_input[CONF_ACCESS_CODE],
+                    password,
+                )
+                LOGGER.debug("ConfigFlow.user_manual: validation errors=%s", errors)
+                if not errors and snapshot is not None:
+                    mac = device.mac if device is not None else snapshot.mac
+
+                    LOGGER.debug("ConfigFlow.user_manual: device=%s mac=%s", device, mac)
+                    if not mac:
+                        errors = {"base": "cannot_identify"}
+                    else:
+                        self._confirm_device = device
+                        await self.async_set_unique_id(dr.format_mac(mac))
+                        self._abort_if_unique_id_configured()
+                        serial = device.serial_number if device is not None else None
+                        self._entry_data = {
+                            **user_input,
+                            CONF_HOST: str(host),
+                            CONF_PASSWORD: password,
+                            CONF_SERIAL: serial,
+                        }
+                        self._pending_options = {
+                            CONF_VALUES: _default_enabled_values(snapshot.values),
+                            CONF_SETPOINTS: _default_enabled_setpoints(snapshot.setpoints),
+                        }
+                        return self._config_create_entry()
+                elif not errors:
+                    errors = {"base": "unknown"}
 
         return self.async_show_form(
             step_id="user_manual",
