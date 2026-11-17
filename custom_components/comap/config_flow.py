@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from ipaddress import IPv4Address
 from typing import Any, cast, override
 
-import voluptuous as vol
+import probatio
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
@@ -64,9 +65,9 @@ _MANUAL_ENTRY = "__manual__"
 _CONF_CONFIGURE_ENTITIES = "configure_entities"
 
 _HOST_SELECTOR = TextSelector(TextSelectorConfig(type=TextSelectorType.TEXT))
-_PORT_SELECTOR = vol.All(
+_PORT_SELECTOR = probatio.All(
     NumberSelector(NumberSelectorConfig(min=1, max=65535, step=1, mode=NumberSelectorMode.BOX)),
-    vol.Coerce(int),
+    probatio.Coerce(int),
 )
 _HIDDEN_SELECTOR = TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))
 
@@ -88,20 +89,22 @@ def _credentials_schema(
     host: str | None = None,
     port: int = DEFAULT_PORT,
     controller_address: int = DEFAULT_CONTROLLER_ADDRESS,
-) -> vol.Schema:
-    host_key = vol.Required(CONF_HOST) if host is None else vol.Required(CONF_HOST, default=host)
-    return vol.Schema(
+) -> probatio.Schema:
+    host_key = (
+        probatio.Required(CONF_HOST) if host is None else probatio.Required(CONF_HOST, default=host)
+    )
+    return probatio.Schema(
         {
             host_key: _HOST_SELECTOR,
-            vol.Required(CONF_PORT, default=port): _PORT_SELECTOR,
-            vol.Required(CONF_CONTROLLER_ADDRESS, default=controller_address): vol.All(
+            probatio.Required(CONF_PORT, default=port): _PORT_SELECTOR,
+            probatio.Required(CONF_CONTROLLER_ADDRESS, default=controller_address): probatio.All(
                 NumberSelector(
                     NumberSelectorConfig(min=1, max=32, step=1, mode=NumberSelectorMode.BOX)
                 ),
-                vol.Coerce(int),
+                probatio.Coerce(int),
             ),
-            vol.Required(CONF_ACCESS_CODE, default="0"): _HIDDEN_SELECTOR,
-            vol.Optional(CONF_PASSWORD): _HIDDEN_SELECTOR,
+            probatio.Required(CONF_ACCESS_CODE, default="0"): _HIDDEN_SELECTOR,
+            probatio.Optional(CONF_PASSWORD): _HIDDEN_SELECTOR,
         }
     )
 
@@ -114,6 +117,16 @@ class _CtrlSnapshot:
     values: list
     setpoints: list
     mac: str | None
+
+
+_SECRET_KEYS = (CONF_ACCESS_CODE, CONF_PASSWORD)
+
+
+def _redact(user_input: dict[str, Any] | None) -> dict[str, Any] | None:
+    """Copy of ``user_input`` that is safe to log (credentials masked)."""
+    if user_input is None:
+        return None
+    return {k: "**REDACTED**" if k in _SECRET_KEYS and v else v for k, v in user_input.items()}
 
 
 def _parse_host(value: str) -> IPv4Address | None:
@@ -217,6 +230,39 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         self._entry_data: dict[str, Any] = {}
         self._pending_options: dict[str, Any] = {}
 
+    async def async_step_reauth(self, entry_data: Mapping[str, Any]) -> ConfigFlowResult:
+        """Start re-authentication after the controller rejected the access code."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> ConfigFlowResult:
+        """Ask for a new access code and verify it before saving."""
+        entry = self._get_reauth_entry()
+        errors: dict[str, str] = {}
+
+        if user_input is not None:
+            # The write password is deliberately not sent here: it is a separate credential with
+            # brute-force protection on the controller, and only the access code is in question.
+            errors, _ = await _validate_connection(
+                IPv4Address(entry.data[CONF_HOST]),
+                entry.data.get(CONF_PORT, DEFAULT_PORT),
+                entry.data.get(CONF_CONTROLLER_ADDRESS, DEFAULT_CONTROLLER_ADDRESS),
+                user_input[CONF_ACCESS_CODE],
+                None,
+            )
+            if not errors:
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={CONF_ACCESS_CODE: user_input[CONF_ACCESS_CODE]}
+                )
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=probatio.Schema({probatio.Required(CONF_ACCESS_CODE): _HIDDEN_SELECTOR}),
+            errors=errors,
+            description_placeholders={"name": entry.title},
+        )
+
     @override
     async def async_step_integration_discovery(
         self, discovery_info: DiscoveryInfoType
@@ -260,9 +306,9 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Required("device"): SelectSelector(
+                    probatio.Required("device"): SelectSelector(
                         SelectSelectorConfig(options=options, mode=SelectSelectorMode.LIST)
                     )
                 }
@@ -288,7 +334,7 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Confirm a discovered device and validate credentials."""
-        LOGGER.debug("ConfigFlow.confirm: user_input=%s", user_input)
+        LOGGER.debug("ConfigFlow.confirm: user_input=%s", _redact(user_input))
         device_data = self._confirm_device
         assert device_data is not None
         errors: dict[str, str] = {}
@@ -342,7 +388,7 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> ConfigFlowResult:
         """Handle manual host entry with MAC resolution fallback."""
-        LOGGER.debug("ConfigFlow.user_manual: user_input=%s", user_input)
+        LOGGER.debug("ConfigFlow.user_manual: user_input=%s", _redact(user_input))
         errors: dict[str, str] = {}
 
         if user_input is not None:
@@ -425,11 +471,13 @@ class ComApConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class ComApOptionsFlow(OptionsFlow):
-    """Options flow — password, poll interval, and per-item entity selection."""
+    """Options flow — poll interval, write password, and per-item entity selection."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         self.coordinator = config_entry.runtime_data
         self.options = config_entry.options
+        self._entry = config_entry
+        self._new_password: int | None = None
         self._pending: dict[str, Any] = {}
         self._value_groups: list[tuple[str, list]] = []
         self._setpoint_groups: list[tuple[str, list]] = []
@@ -500,44 +548,94 @@ class ComApOptionsFlow(OptionsFlow):
             and (s.group or GROUP_UNGROUPED) in DEFAULT_SETPOINT_GROUPS
         }
 
-    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
-        """Collect password, poll interval, and optional entity configuration."""
-        LOGGER.debug("OptionsFlow.init: user_input=%s", user_input)
-        if user_input is not None:
-            configure = user_input.get(_CONF_CONFIGURE_ENTITIES, False)
-            self._pending = {k: v for k, v in user_input.items() if k != _CONF_CONFIGURE_ENTITIES}
-            if configure:
-                self._setup_groups()
-                self._enabled_values = self._initial_enabled_values()
-                self._enabled_setpoints = self._initial_enabled_setpoints()
-                self._current_value_group = 0
-                self._current_setpoint_group = 0
-                return await self.async_step_value_group()
-            # Preserve existing entity configuration unchanged.
-            for key in (CONF_VALUES, CONF_SETPOINTS):
-                if key in self.options:
-                    self._pending[key] = self.options[key]
-            return self.async_create_entry(data=self._pending)
+    def _save(self) -> ConfigFlowResult:
+        """Persist options, and the new write password (stored in entry data) if one was given.
 
+        Both go through a single ``async_update_entry`` so the entry reloads once.
+        """
+        if self._new_password is not None:
+            self.hass.config_entries.async_update_entry(
+                self._entry,
+                data={**self._entry.data, CONF_PASSWORD: self._new_password},
+                options=self._pending,
+            )
+        return self.async_create_entry(data=self._pending)
+
+    async def _validate_new_password(self, raw: str) -> tuple[dict[str, str], int | None]:
+        """Parse the password and check it against the controller (one attempt)."""
+        try:
+            password = _parse_password(raw)
+        except ValueError:
+            return {CONF_PASSWORD: "invalid_password"}, None
+        data = self._entry.data
+        errors, _ = await _validate_connection(
+            IPv4Address(data[CONF_HOST]),
+            data.get(CONF_PORT, DEFAULT_PORT),
+            data.get(CONF_CONTROLLER_ADDRESS, DEFAULT_CONTROLLER_ADDRESS),
+            data[CONF_ACCESS_CODE],
+            password,
+        )
+        return errors, password
+
+    def _init_form(self, errors: dict[str, str] | None = None) -> ConfigFlowResult:
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Optional(
+                    probatio.Optional(
                         CONF_SCAN_INTERVAL,
                         default=self.options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
-                    ): vol.All(
+                    ): probatio.All(
                         NumberSelector(
                             NumberSelectorConfig(
                                 min=5, max=300, step=1, mode=NumberSelectorMode.BOX
                             )
                         ),
-                        vol.Coerce(int),
+                        probatio.Coerce(int),
                     ),
-                    vol.Optional(_CONF_CONFIGURE_ENTITIES, default=False): BooleanSelector(),
+                    probatio.Optional(CONF_PASSWORD): _HIDDEN_SELECTOR,
+                    probatio.Optional(_CONF_CONFIGURE_ENTITIES, default=False): BooleanSelector(),
                 }
             ),
+            errors=errors or {},
         )
+
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
+        """Collect poll interval, optional new write password, and entity configuration."""
+        LOGGER.debug(
+            "OptionsFlow.init: configure=%s", (user_input or {}).get(_CONF_CONFIGURE_ENTITIES)
+        )
+        if user_input is None:
+            return self._init_form()
+
+        # Blank password means "keep the current one". A new one is verified first so a typo
+        # never gets saved (and never reaches the controller more than once per submit).
+        raw_password = user_input.get(CONF_PASSWORD)
+        self._new_password = None
+        if raw_password:
+            errors, password = await self._validate_new_password(raw_password)
+            if errors:
+                return self._init_form(errors)
+            self._new_password = password
+
+        configure = user_input.get(_CONF_CONFIGURE_ENTITIES, False)
+        self._pending = {
+            k: v
+            for k, v in user_input.items()
+            if k not in (_CONF_CONFIGURE_ENTITIES, CONF_PASSWORD)
+        }
+        if configure:
+            self._setup_groups()
+            self._enabled_values = self._initial_enabled_values()
+            self._enabled_setpoints = self._initial_enabled_setpoints()
+            self._current_value_group = 0
+            self._current_setpoint_group = 0
+            return await self.async_step_value_group()
+        # Preserve existing entity configuration unchanged.
+        for key in (CONF_VALUES, CONF_SETPOINTS):
+            if key in self.options:
+                self._pending[key] = self.options[key]
+        return self._save()
 
     async def async_step_value_group(
         self, user_input: dict[str, Any] | None = None
@@ -571,9 +669,9 @@ class ComApOptionsFlow(OptionsFlow):
         )
         return self.async_show_form(
             step_id="value_group",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Optional("enabled", default=default): SelectSelector(
+                    probatio.Optional("enabled", default=default): SelectSelector(
                         SelectSelectorConfig(
                             options=options, multiple=True, mode=SelectSelectorMode.LIST
                         )
@@ -606,7 +704,7 @@ class ComApOptionsFlow(OptionsFlow):
             self._pending[CONF_VALUES] = list(self._enabled_values)
             self._pending[CONF_SETPOINTS] = list(self._enabled_setpoints)
             LOGGER.debug("OptionsFlow saving: %s", self._pending)
-            return self.async_create_entry(data=self._pending)
+            return self._save()
 
         group_name, group_setpoints = self._setpoint_groups[self._current_setpoint_group]
         options = [
@@ -617,9 +715,9 @@ class ComApOptionsFlow(OptionsFlow):
         is_last = self._current_setpoint_group == len(self._setpoint_groups) - 1
         return self.async_show_form(
             step_id="setpoint_group",
-            data_schema=vol.Schema(
+            data_schema=probatio.Schema(
                 {
-                    vol.Optional("enabled", default=default): SelectSelector(
+                    probatio.Optional("enabled", default=default): SelectSelector(
                         SelectSelectorConfig(
                             options=options, multiple=True, mode=SelectSelectorMode.LIST
                         )

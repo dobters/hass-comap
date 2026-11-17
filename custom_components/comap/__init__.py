@@ -12,6 +12,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers import discovery_flow
+from homeassistant.helpers import issue_registry as ir
 from homeassistant.helpers.event import async_track_time_interval
 from pycomap import (
     ComApAuthError,
@@ -30,7 +31,7 @@ from .const import (
     DISCOVERY_INTERVAL_SECONDS,
     DOMAIN,
 )
-from .coordinator import ComApCoordinator
+from .coordinator import ISSUE_PASSWORD_REJECTED, ComApCoordinator
 from .discovery import discover
 
 if TYPE_CHECKING:
@@ -114,6 +115,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ComApConfigEntry) -> boo
 
     entry.async_on_unload(entry.add_update_listener(_reload_entry))
     return True
+
+
+async def async_remove_entry(hass: HomeAssistant, entry: ComApConfigEntry) -> None:
+    """Clean up the repair issue when the entry is deleted."""
+    ir.async_delete_issue(hass, DOMAIN, f"{ISSUE_PASSWORD_REJECTED}_{entry.entry_id}")
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ComApConfigEntry) -> bool:

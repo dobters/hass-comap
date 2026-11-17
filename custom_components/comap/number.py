@@ -83,11 +83,10 @@ class ComApNumberEntity(ComApEntity, NumberEntity):
             self._attr_entity_registry_enabled_default = False
 
     @callback
-    def _handle_coordinator_update(self) -> None:
+    def _update_attrs(self) -> None:
         value = self.coordinator.data.setpoints.get(self._desc.number)
         if isinstance(value, (int, float)):
             self._attr_native_value = float(value)
-        self.async_write_ha_state()
 
     async def async_set_native_value(self, value: float) -> None:
         await self.coordinator.async_set_setpoint(self._desc.number, value)

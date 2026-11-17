@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from typing import cast
 
+from homeassistant.core import callback
 from homeassistant.helpers import device_registry as dr
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -31,3 +32,24 @@ class ComApEntity(CoordinatorEntity[ComApCoordinator]):
             connections={(dr.CONNECTION_NETWORK_MAC, unique_id)},
             sw_version=coordinator.sw_version,
         )
+
+    async def async_added_to_hass(self) -> None:
+        """Populate state from the data already polled, so it isn't "unknown" until the next poll.
+
+        ``CoordinatorEntity`` only registers a listener here and does not call
+        ``_handle_coordinator_update`` for the data that is already available.
+        """
+        await super().async_added_to_hass()
+        self._update_attrs()
+
+    @callback
+    def _update_attrs(self) -> None:
+        """Copy current coordinator data into the entity's ``_attr_*`` fields.
+
+        Overridden by subclasses. Called once when the entity is added and on every update.
+        """
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        self._update_attrs()
+        super()._handle_coordinator_update()

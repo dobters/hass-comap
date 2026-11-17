@@ -54,5 +54,5 @@ class ComApCommandButton(ComApEntity, ButtonEntity):
         self._attr_translation_key = translation_key
 
     async def async_press(self) -> None:
-        await self.coordinator.ctrl.execute_command(self._command)
+        await self.coordinator.async_execute_command(self._command)
         await self.coordinator.async_request_refresh()

@@ -12,7 +12,7 @@
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/dobters/hass-comap/issues",
   "requirements": [
-    "pycomap==2.3.1"
+    "pycomap==2.4.0"
   ],
-  "version": "1.0.1"
+  "version": "1.1.0"
 }

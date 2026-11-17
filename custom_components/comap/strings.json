@@ -1956,19 +1956,27 @@
           "scan": "Scan again",
           "user_manual": "Enter manually"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate ComAp Controller",
+        "description": "The controller rejected the access code for {name}. Enter the current access code.",
+        "data": {
+          "access_code": "Access Code"
+        }
       }
     },
     "error": {
       "cannot_connect": "Failed to connect",
       "invalid_auth": "Invalid access code",
       "unknown": "Unexpected error",
-      "cannot_identify": "Controller responded to TCP but did not reply to the discovery probe \u2014 cannot determine MAC address",
+      "cannot_identify": "Controller responded to TCP but did not reply to the discovery probe — cannot determine MAC address",
       "invalid_password": "Invalid password",
       "invalid_host": "Invalid IP address"
     },
     "abort": {
       "already_configured": "Controller is already configured",
-      "already_in_progress": "Configuration already in progress"
+      "already_in_progress": "Configuration already in progress",
+      "reauth_successful": "Re-authentication was successful"
     }
   },
   "options": {
@@ -1977,9 +1985,11 @@
         "title": "ComAp Options",
         "data": {
           "scan_interval": "Poll Interval (seconds)",
+          "password": "Write Password",
           "configure_entities": "Configure entities"
         },
         "data_description": {
+          "password": "Leave blank to keep the current password. A new password is checked against the controller before it is saved.",
           "configure_entities": "If checked, you can enable or disable individual values and setpoints on the next screens."
         }
       },
@@ -1997,6 +2007,18 @@
           "enabled": "Enabled setpoints"
         }
       }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid access code",
+      "invalid_password": "Invalid password",
+      "unknown": "Unexpected error"
+    }
+  },
+  "issues": {
+    "password_rejected": {
+      "title": "ComAp write password rejected",
+      "description": "The controller rejected the write password for {name}. Setpoint writes that need it are paused so the controller is not locked by repeated wrong attempts. Open the integration, choose Configure, and enter the correct write password."
     }
   }
 }
