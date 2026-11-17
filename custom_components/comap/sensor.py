@@ -77,10 +77,9 @@ class ComApValueSensor(ComApEntity, SensorEntity):
             self._attr_state_class = SensorStateClass.MEASUREMENT
 
     @callback
-    def _handle_coordinator_update(self) -> None:
+    def _update_attrs(self) -> None:
         value = self.coordinator.data.values.get(self._desc.number)
         self._attr_native_value = None if isinstance(value, bytes) else value
-        self.async_write_ha_state()
 
 
 class ComApAlarmSensor(ComApEntity, SensorEntity):
@@ -94,17 +93,11 @@ class ComApAlarmSensor(ComApEntity, SensorEntity):
     def __init__(self, coordinator: ComApCoordinator) -> None:
         super().__init__(coordinator, "alarm_count")
 
-    @property
-    def native_value(self) -> int:
-        if self.coordinator.data is None:
-            return 0
-        return len(self.coordinator.data.alarms)
-
-    @property
-    def extra_state_attributes(self) -> dict[str, object]:
-        if self.coordinator.data is None:
-            return {}
-        return {
+    @callback
+    def _update_attrs(self) -> None:
+        alarms = self.coordinator.data.alarms if self.coordinator.data is not None else []
+        self._attr_native_value = len(alarms)
+        self._attr_extra_state_attributes = {
             "alarms": [
                 {
                     "reason": a.reason,
@@ -112,6 +105,6 @@ class ComApAlarmSensor(ComApEntity, SensorEntity):
                     "is_active": a.is_active,
                     "is_confirmed": a.is_confirmed,
                 }
-                for a in self.coordinator.data.alarms
+                for a in alarms
             ]
         }

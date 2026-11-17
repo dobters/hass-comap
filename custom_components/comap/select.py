@@ -60,11 +60,10 @@ class ComApSelectEntity(ComApEntity, SelectEntity):
             self._attr_entity_registry_enabled_default = False
 
     @callback
-    def _handle_coordinator_update(self) -> None:
+    def _update_attrs(self) -> None:
         value = self.coordinator.data.setpoints.get(self._desc.number)
         if isinstance(value, str):
             self._attr_current_option = value
-        self.async_write_ha_state()
 
     async def async_select_option(self, option: str) -> None:
         await self.coordinator.async_set_setpoint(self._desc.number, option)

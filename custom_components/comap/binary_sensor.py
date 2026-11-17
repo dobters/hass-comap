@@ -75,8 +75,7 @@ class ComApBitSensor(ComApEntity, BinarySensorEntity):
         self._attr_name = f"{desc.name} {bit + 1}"
 
     @callback
-    def _handle_coordinator_update(self) -> None:
+    def _update_attrs(self) -> None:
         value = self.coordinator.data.values.get(self._desc.number)
         if isinstance(value, int):
             self._attr_is_on = bool(value & (1 << self._bit))
-        self.async_write_ha_state()

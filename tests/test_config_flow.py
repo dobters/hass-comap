@@ -1,18 +1,26 @@
 """Tests for the ComAp config flow."""
 
+import logging
 from ipaddress import IPv4Address
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 
-import voluptuous_serialize
+import probatio
+import pytest
 from homeassistant.config_entries import ConfigFlowResult
-from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT
+from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_PORT, CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import config_validation as cv
 from pycomap.discovery import AccessType, DeviceType, DiscoveryDevice, DiscoveryUnit
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.comap.config_flow import _CtrlSnapshot
-from custom_components.comap.const import CONF_ACCESS_CODE, DEFAULT_PORT, DOMAIN
+from custom_components.comap.const import (
+    CONF_ACCESS_CODE,
+    CONF_CONTROLLER_ADDRESS,
+    DEFAULT_PORT,
+    DOMAIN,
+)
 
 _MOCK_DEVICE = DiscoveryDevice(
     format_version=1,
@@ -45,17 +53,17 @@ def _assert_schema_serializable(result: ConfigFlowResult) -> None:
     """Assert the form's schema can be converted to JSON for the frontend.
 
     `hass.config_entries.flow.async_configure` calls the flow handler directly and
-    returns the raw `vol.Schema` object in `result["data_schema"]` — it never
-    exercises `voluptuous_serialize.convert`, which is what the real HTTP config
+    returns the raw `probatio.Schema` object in `result["data_schema"]` — it never
+    exercises `probatio.to_field_list`, which is what the real HTTP config
     flow endpoint does before sending a form to the browser (see
     `homeassistant/helpers/data_entry_flow.py::_prepare_result_json`). A schema
     field built from a validator the serializer can't represent (e.g.
-    `vol.Coerce(IPv4Address)`, a bare lambda) passes every flow-manager-level
+    `probatio.Coerce(IPv4Address)`, a bare lambda) passes every flow-manager-level
     assertion but crashes that endpoint with `ValueError: Unable to convert
     schema: ...`. Call this on every FORM result to catch that class of bug.
     """
     assert result["type"] == FlowResultType.FORM
-    voluptuous_serialize.convert(result["data_schema"], custom_serializer=cv.custom_serializer)
+    probatio.to_field_list(result["data_schema"], custom_serializer=cv.custom_serializer)
 
 
 async def _init_to_manual(hass: HomeAssistant, flow_id: str) -> ConfigFlowResult:
@@ -311,3 +319,181 @@ async def test_manual_entry_rejects_invalid_password(hass: HomeAssistant) -> Non
     mock_discover_host.assert_not_awaited()
     mock_validate.assert_not_awaited()
     _assert_schema_serializable(result)
+
+
+# -- reauth (access code) --
+
+_ENTRY_DATA = {
+    CONF_HOST: "192.168.1.9",
+    CONF_PORT: DEFAULT_PORT,
+    CONF_CONTROLLER_ADDRESS: 1,
+    CONF_ACCESS_CODE: "old-code",
+    CONF_PASSWORD: 1234,
+}
+
+
+def _add_entry(hass: HomeAssistant) -> MockConfigEntry:
+    entry = MockConfigEntry(
+        domain=DOMAIN, unique_id="aa:bb:cc:dd:ee:ff", title="AMF25", data=dict(_ENTRY_DATA)
+    )
+    entry.add_to_hass(hass)
+    return entry
+
+
+async def test_reauth_updates_access_code(hass: HomeAssistant) -> None:
+    entry = _add_entry(hass)
+    with (
+        patch(
+            "custom_components.comap.config_flow._validate_connection",
+            new=AsyncMock(return_value=({}, None)),
+        ) as mock_validate,
+        patch.object(hass.config_entries, "async_schedule_reload"),
+    ):
+        result = await entry.start_reauth_flow(hass)
+        assert result["step_id"] == "reauth_confirm"
+        _assert_schema_serializable(result)
+
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_ACCESS_CODE: "new-code"}
+        )
+
+    assert result["type"] == FlowResultType.ABORT
+    assert result["reason"] == "reauth_successful"
+    assert entry.data[CONF_ACCESS_CODE] == "new-code"
+    assert entry.data[CONF_PASSWORD] == 1234  # untouched
+    # The write password must never be sent while only the access code is in question.
+    call = mock_validate.await_args
+    assert call is not None
+    assert call.args[-1] is None
+
+
+async def test_reauth_wrong_access_code_shows_error(hass: HomeAssistant) -> None:
+    entry = _add_entry(hass)
+    with patch(
+        "custom_components.comap.config_flow._validate_connection",
+        new=AsyncMock(return_value=({"base": "invalid_auth"}, None)),
+    ):
+        result = await entry.start_reauth_flow(hass)
+        result = await hass.config_entries.flow.async_configure(
+            result["flow_id"], {CONF_ACCESS_CODE: "wrong"}
+        )
+
+    assert result["type"] == FlowResultType.FORM
+    assert result["errors"] == {"base": "invalid_auth"}
+    assert entry.data[CONF_ACCESS_CODE] == "old-code"
+
+
+# -- options flow: write password --
+
+
+def _options_entry(hass: HomeAssistant) -> MockConfigEntry:
+    entry = _add_entry(hass)
+    coordinator = MagicMock()
+    coordinator.ctrl.values = []
+    coordinator.ctrl.setpoints = []
+    entry.runtime_data = coordinator
+    return entry
+
+
+async def test_options_blank_password_keeps_current(hass: HomeAssistant) -> None:
+    entry = _options_entry(hass)
+    with patch(
+        "custom_components.comap.config_flow._validate_connection", new=AsyncMock()
+    ) as mock_validate:
+        result = await hass.config_entries.options.async_init(entry.entry_id)
+        assert result["step_id"] == "init"
+        _assert_schema_serializable(result)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], {CONF_SCAN_INTERVAL: 20}
+        )
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert entry.options[CONF_SCAN_INTERVAL] == 20
+    assert entry.data[CONF_PASSWORD] == 1234
+    mock_validate.assert_not_awaited()
+
+
+async def test_options_new_password_is_validated_and_saved_in_entry_data(
+    hass: HomeAssistant,
+) -> None:
+    entry = _options_entry(hass)
+    with patch(
+        "custom_components.comap.config_flow._validate_connection",
+        new=AsyncMock(return_value=({}, _mock_snapshot())),
+    ) as mock_validate:
+        result = await hass.config_entries.options.async_init(entry.entry_id)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], {CONF_SCAN_INTERVAL: 20, CONF_PASSWORD: "4321"}
+        )
+
+    assert result["type"] == FlowResultType.CREATE_ENTRY
+    assert entry.data[CONF_PASSWORD] == 4321
+    assert entry.data[CONF_ACCESS_CODE] == "old-code"
+    assert CONF_PASSWORD not in entry.options  # never duplicated into options
+    assert CONF_PASSWORD not in result["data"]
+    mock_validate.assert_awaited_once()
+    call = mock_validate.await_args
+    assert call is not None
+    assert call.args[-1] == 4321
+
+
+async def test_options_rejected_password_is_not_saved(hass: HomeAssistant) -> None:
+    entry = _options_entry(hass)
+    with patch(
+        "custom_components.comap.config_flow._validate_connection",
+        new=AsyncMock(return_value=({CONF_PASSWORD: "invalid_password"}, None)),
+    ) as mock_validate:
+        result = await hass.config_entries.options.async_init(entry.entry_id)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], {CONF_SCAN_INTERVAL: 20, CONF_PASSWORD: "9999"}
+        )
+
+    assert result["type"] == FlowResultType.FORM
+    assert result["errors"] == {CONF_PASSWORD: "invalid_password"}
+    _assert_schema_serializable(result)
+    assert entry.data[CONF_PASSWORD] == 1234
+    mock_validate.assert_awaited_once()  # one attempt per submit, no automatic retry
+
+
+async def test_options_non_numeric_password_never_reaches_controller(
+    hass: HomeAssistant,
+) -> None:
+    entry = _options_entry(hass)
+    with patch(
+        "custom_components.comap.config_flow._validate_connection", new=AsyncMock()
+    ) as mock_validate:
+        result = await hass.config_entries.options.async_init(entry.entry_id)
+        result = await hass.config_entries.options.async_configure(
+            result["flow_id"], {CONF_SCAN_INTERVAL: 20, CONF_PASSWORD: "abc"}
+        )
+
+    assert result["errors"] == {CONF_PASSWORD: "invalid_password"}
+    mock_validate.assert_not_awaited()
+    assert entry.data[CONF_PASSWORD] == 1234
+
+
+async def test_debug_logs_never_contain_credentials(
+    hass: HomeAssistant, caplog: pytest.LogCaptureFixture
+) -> None:
+    caplog.set_level(logging.DEBUG, logger="custom_components.comap")
+    with (
+        patch("custom_components.comap.config_flow._discover_network", return_value=[]),
+        patch(
+            "custom_components.comap.config_flow._validate_connection",
+            new=AsyncMock(return_value=({"base": "invalid_auth"}, None)),
+        ),
+        patch(
+            "custom_components.comap.config_flow.discover_host",
+            new=AsyncMock(return_value=_MOCK_DEVICE),
+        ),
+    ):
+        result = await hass.config_entries.flow.async_init(DOMAIN, context={"source": "user"})
+        await _init_to_manual(hass, result["flow_id"])
+        await hass.config_entries.flow.async_configure(
+            result["flow_id"],
+            {**_MANUAL_INPUT, CONF_ACCESS_CODE: "s3cret-code", CONF_PASSWORD: "424242"},
+        )
+
+    assert "user_input" in caplog.text  # the step is still logged...
+    assert "s3cret-code" not in caplog.text  # ...but without credentials
+    assert "424242" not in caplog.text
